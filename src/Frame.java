@@ -5,7 +5,6 @@ public class Frame {
         JFrame frame = new JFrame();
         Map map = new Map();
 
-
         frame.add(map);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Snake Game");
@@ -13,9 +12,5 @@ public class Frame {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new Frame();
     }
 }

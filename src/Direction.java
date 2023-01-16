@@ -1,31 +1,18 @@
-public class Direction {
-    /*private*/ boolean up;
-    /*private*/ boolean down;
-    /*private*/ boolean right;
-    /*private*/ boolean left;
+public enum Direction {
+    UP(0, -1),
+    DOWN(0, 1),
+    RIGHT(1, 0),
+    LEFT(-1, 0);
 
-    public Direction () {}
-    public Direction (boolean moveUp, boolean moveDown, boolean moveLeft, boolean moveRight) {
-        this.up = moveUp;
-        this.down = moveDown;
-        this.left = moveLeft;
-        this.right = moveRight;
+
+    public int x, y;
+    public Coordinate v;
+
+    Direction (int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.v = new Coordinate(x,y);
     }
 
-    public Direction chooseDirection () {
-//        Direction rightPath = new Direction();
-
-
-//        return rightPath;
-        return null;
-    }
-
-    public int getCurrentDirection () {
-        // TODO: Please do a ENUM class, this is too bad!!
-        if (up) return 1;
-        if (down) return 2;
-        if (right) return 3;
-        return 4;
-    }
 
 }

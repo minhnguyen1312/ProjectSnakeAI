@@ -1,36 +1,17 @@
 public class Coordinate {
-    private int x;
-    private int y;
+    public int x;
+    public int y;
 
-    public int getX () {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    Coordinate(int x, int y) {
+    public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    public void changeCoor() {
 
+    public Coordinate add(Coordinate b) {
+        return new Coordinate(this.x + b.x, this.y + b.y);
+    }
+    public Coordinate moveTo (Direction d) {
+        return this.add(d.v);
     }
 
-    public void up() {
-        this.y--;
-    }
-
-    public void down() {
-        this.y++;
-    }
-
-    public void left() {
-        this.x--;
-    }
-
-    public void right() {
-        this.x++;
-    }
 }

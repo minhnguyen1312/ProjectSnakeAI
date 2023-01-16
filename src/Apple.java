@@ -4,28 +4,26 @@ import java.util.Random;
 
 
 public class Apple {
-    private int xApple;
-    private int yApple;
+    private Coordinate appleCoor;
     private int width, height;
 
     public Apple (int xApple, int yApple, int size) {
-        this.xApple = xApple;
-        this.yApple = yApple;
-        width = size;
-        height = size;
+        this.appleCoor = new Coordinate(xApple, yApple);
+        this.width = size;
+        this.height = size;
     }
 
 
     public void drawApple (Graphics g) {
         g.setColor(Color.RED);
-        g.fillOval(xApple * width, yApple * height, width, height);
+        g.fillOval(appleCoor.x * width, appleCoor.y * height, width, height);
     }
 
     public int getxApple() {
-        return xApple;
+        return appleCoor.x;
     }
     public int getyApple() {
-        return yApple;
+        return appleCoor.y;
     }
 
 }
