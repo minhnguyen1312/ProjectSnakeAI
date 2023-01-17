@@ -75,7 +75,7 @@ public class StartScreen extends JFrame implements ActionListener {
             //String[] args = "";
             newFrame.main(null);
         } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            System.err.print("Error occured!");
+            System.err.print("Error occurred!");
         }
     }
 
