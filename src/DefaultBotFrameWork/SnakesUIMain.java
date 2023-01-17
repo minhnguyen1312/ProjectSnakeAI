@@ -23,7 +23,9 @@ public class SnakesUIMain {
      * @throws IOException          FileWriter handler
      */
 
-    public static void run() throws InterruptedException, IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+
+
+    public static void main (String[] args) throws InterruptedException, IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 //        if (args.length < 2) {
 //            System.err.println("You must provide two classes implementing the Bot interface.");
 //            System.exit(1);

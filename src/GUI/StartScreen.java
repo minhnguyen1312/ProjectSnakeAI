@@ -72,7 +72,8 @@ public class StartScreen extends JFrame implements ActionListener {
     public void paintFrame() {
         SnakesUIMain newFrame = new SnakesUIMain();
         try {
-            newFrame.run();
+            //String[] args = "";
+            newFrame.main(null);
         } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             System.err.print("Error occured!");
         }
