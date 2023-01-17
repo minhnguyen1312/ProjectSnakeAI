@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
 import DefaultBotFrameWork.SnakesUIMain;
@@ -71,9 +72,9 @@ public class StartScreen extends JFrame implements ActionListener {
     public void paintFrame() {
         SnakesUIMain newFrame = new SnakesUIMain();
         try {
-
-        } catch () {
-            System.err.print("");
+            newFrame.run();
+        } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            System.err.print("Error occured!");
         }
     }
 
