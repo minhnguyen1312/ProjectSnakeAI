@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 
+import DefaultBotFrameWork.*;
 import DefaultBotFrameWork.SnakesUIMain;
 import Game.Map;
+import Game.*;
 
 
 public class StartScreen extends JFrame implements ActionListener {
@@ -70,10 +72,10 @@ public class StartScreen extends JFrame implements ActionListener {
     }
 
     public void paintFrame() {
-        SnakesUIMain newFrame = new SnakesUIMain();
+        //SnakesUIMain newFrame = new SnakesUIMain();
         try {
             //String[] args = "";
-            newFrame.main(null);
+            SnakesUIMain.main(null);
         } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             System.err.print("Error occurred!");
         }
@@ -247,7 +249,9 @@ public class StartScreen extends JFrame implements ActionListener {
         if(e.getSource() == playButton) {
             this.setVisible(false);
             this.dispose();
-            paintFrame();
+            //paintFrame();
+
+            Main.runBotvsBot();
         } else if (e.getSource() == settingsButton) {
             //GUI.SettingsFrame myWindow = new GUI.SettingsFrame();
             this.getContentPane().removeAll();
