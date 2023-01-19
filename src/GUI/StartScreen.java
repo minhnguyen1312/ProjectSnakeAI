@@ -1,21 +1,15 @@
 package GUI;
 
+import DefaultBotFrameWork.SnakesUIMain;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.io.*;
 import javax.swing.*;
 
-import DefaultBotFrameWork.*;
-import DefaultBotFrameWork.SnakesUIMain;
-import Game.Map;
-import Game.*;
 
-
-public class StartScreen extends JFrame implements ActionListener {
+public class StartScreen extends JFrame implements ActionListener, Runnable {
 
     private static final long serialVersionUID = 1L;
     //SCREEN SETTINGS
@@ -33,21 +27,26 @@ public class StartScreen extends JFrame implements ActionListener {
     JButton leaderboardButton = new JButton();
     JButton quitgameButton = new JButton();
     JButton infoButton = new JButton();
+    JButton backButton = new JButton();
 
-    private ImageIcon StartScreenBackground;
+    Combobox<String> botNameCombobox = new Combobox<>();
+    Combobox<String> bot1NameCombobox = new Combobox<>();
+    Combobox<String> bot2NameCombobox = new Combobox<>();
+
+    Combobox<String> botColorCombobox = new Combobox<>();
+    Combobox<String> playerColorCombobox = new Combobox<>();
+
+    private ImageIcon StartScreenBackground = new ImageIcon(this.getClass().getResource("/GUI/img/backgrv3.jpg"));
+    private ImageIcon SettingBackground = new ImageIcon(this.getClass().getResource("/GUI/img/settingsv2.jpg"));;
+    private ImageIcon logo;
     private JLabel labelContainer;
 
     // Settings GUI.Frame
     static JButton applyChange = new JButton();
     //    static JPanel snake1 = new JPanel();
 //    static JPanel snake2 = new JPanel();
-    private static JTextField textSnake1Name = new JTextField();
-    private static JTextField textSnake1Type = new JTextField();
-    private static JTextField textSnake1Color = new JTextField();
+    private static JTextField playerNameTextField = new JTextField();
 
-    private static JTextField textSnake2Name = new JTextField();
-    private static JTextField textSnake2Type = new JTextField();
-    private static JTextField textSnake2Color = new JTextField();
 
     public static String snake1Name;
     public static int snake1Type;
@@ -68,30 +67,56 @@ public class StartScreen extends JFrame implements ActionListener {
     }
 
     public StartScreen() {
-        paintStartScreen();
+        //paintStartScreen();
+
+        backButton.setBounds(2 + 680,tileSize*14 + 2, tileSize*3,tileSize*1);
+        backButton.setText("Back");
+        backButton.setFont(new Font("Comic Sans",Font.BOLD,21));
+        backButton.setFocusable(false);
+        backButton.setHorizontalTextPosition(JButton.CENTER);
+        backButton.setVerticalTextPosition(JButton.CENTER);
+        backButton.setForeground(Color.white);
+        backButton.setBackground(Color.black);
+        backButton.addActionListener(this);
+
+        bot1NameCombobox.addItem("item2");
+        bot1NameCombobox.addItem("item3");
+        bot1NameCombobox.addItem("item4");
+        bot1NameCombobox.addItem("item5");
+        bot1NameCombobox.addItem("item6");
+
+        botColorCombobox.addItem("blue");
+        botColorCombobox.addItem("yellow");
+        botColorCombobox.addItem("green");
+        botColorCombobox.addItem("white");
+
+        playerColorCombobox.addItem("blue");
+        playerColorCombobox.addItem("yellow");
+        playerColorCombobox.addItem("green");
+        playerColorCombobox.addItem("white");
+
     }
 
     public void paintFrame() {
         //SnakesUIMain newFrame = new SnakesUIMain();
-        try {
-            //String[] args = "";
-            SnakesUIMain.main(null);
-        } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            System.err.print("Error occurred!");
-        }
+//        try {
+//            //String[] args = "";
+//            SnakesUIMain.main(null);
+//        } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+//            System.err.print("Error occurred!");
+//        }
     }
 
     public void paintStartScreen() {
-        ImageIcon logo = new ImageIcon(this.getClass().getResource("/GUI/img/logo.png"));
+        logo = new ImageIcon(this.getClass().getResource("/GUI/img/logo.png"));
         this.setIconImage(logo.getImage());
 
-        StartScreenBackground = new ImageIcon(this.getClass().getResource("/GUI/img/backgrv3.jpg"));
         labelContainer = new JLabel(StartScreenBackground);
         labelContainer.setSize(new Dimension(screenWidth, screenHeight));
 
         // paint all Buttons
         playButton.setBounds(tileSize*5,tileSize*3 + 50, tileSize*7,tileSize*1);
-        playButton.setText("PLAY");
+        playButton.setText("PLAYER vs BOT");
         playButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         playButton.setFocusable(false);
         playButton.setHorizontalTextPosition(JButton.CENTER);
@@ -175,6 +200,37 @@ public class StartScreen extends JFrame implements ActionListener {
 
     }
 
+    public void paintStartScreen2() {
+        this.setIconImage(logo.getImage());
+        labelContainer = new JLabel(StartScreenBackground);
+        labelContainer.setSize(new Dimension(screenWidth, screenHeight));
+
+        this.setTitle("SnakeAI Revolution");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(null);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setSize(screenWidth,screenHeight);
+        this.setVisible(true);
+
+
+
+        this.getContentPane().setBackground(new Color(102,204,0));
+        this.add(playButton);
+        this.add(settingsButton);
+        this.add(leaderboardButton);
+        this.add(quitgameButton);
+        this.add(infoButton);
+
+        this.add(labelContainer);      // insert background img at last
+
+        //this.pack();
+        this.setVisible(true);
+
+        //centreWindow(this);
+
+    }
+
 
     public void paintSettingsFrame() {
         this.setTitle("SnakeAI Revolution/Settings");
@@ -184,35 +240,89 @@ public class StartScreen extends JFrame implements ActionListener {
         this.setSize(screenWidth,screenHeight);
         this.setVisible(true);
 
-        applyChange.setBounds(tileSize*5,tileSize*3, tileSize*7,tileSize*1);
-        applyChange.setText("CHANGE!!!!");
-        applyChange.setFont(new Font("Comic Sans",Font.BOLD,25));
-        applyChange.setFocusable(false);
-        applyChange.setHorizontalTextPosition(JButton.CENTER);
-        applyChange.setVerticalTextPosition(JButton.CENTER);
-        applyChange.setForeground(Color.white);
-        applyChange.setBackground(new Color(0,204,102));
-        applyChange.addActionListener(this);
+//        applyChange.setBounds(tileSize*5,tileSize*3, tileSize*7,tileSize*1);
+//        applyChange.setText("CHANGE!!!!");
+//        applyChange.setFont(new Font("Comic Sans",Font.BOLD,25));
+//        applyChange.setFocusable(false);
+//        applyChange.setHorizontalTextPosition(JButton.CENTER);
+//        applyChange.setVerticalTextPosition(JButton.CENTER);
+//        applyChange.setForeground(Color.white);
+//        applyChange.setBackground(new Color(0,204,102));
+//        applyChange.addActionListener(this);
+//
+//
+//        this.add(applyChange);
+//
+//        textSnake1Name.setBounds(50,50,120,30);
+//        this.add(textSnake1Name);
+//        textSnake1Type.setBounds(50,100,120,30);
+//        this.add(textSnake1Type);
+//        textSnake1Color.setBounds(50,150,120,30);
+//        this.add(textSnake1Color);
+//        textSnake2Name.setBounds(50,250,120,30);
+//        this.add(textSnake2Name);
+//        textSnake2Type.setBounds(50,300,120,30);
+//        this.add(textSnake2Type);
+//        textSnake2Color.setBounds(50,350,120,30);
+//        this.add(textSnake2Color);
 
 
-        this.add(applyChange);
 
-        textSnake1Name.setBounds(50,50,120,30);
-        this.add(textSnake1Name);
-        textSnake1Type.setBounds(50,100,120,30);
-        this.add(textSnake1Type);
-        textSnake1Color.setBounds(50,150,120,30);
-        this.add(textSnake1Color);
-        textSnake2Name.setBounds(50,250,120,30);
-        this.add(textSnake2Name);
-        textSnake2Type.setBounds(50,300,120,30);
-        this.add(textSnake2Type);
-        textSnake2Color.setBounds(50,350,120,30);
-        this.add(textSnake2Color);
+
+        playerNameTextField.setPreferredSize(new Dimension(200, 40));
+        this.add(playerNameTextField);
+        Insets insets = this.getInsets();
+        Dimension size = playerNameTextField.getPreferredSize();
+        playerNameTextField.setBounds(245 + insets.left, 150 + insets.top, size.width, size.height);
+
+
+        playerColorCombobox.setPreferredSize(new Dimension(200, 40));
+        //myButton.setBounds(50, 50, 100, 50);
+        this.add(playerColorCombobox);
+
+        playerColorCombobox.setBounds(245 + insets.left, 270 + insets.top, size.width, size.height);
+        playerColorCombobox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(playerColorCombobox.getSelectedItem());
+            }
+        });
+
+
+        botColorCombobox.setPreferredSize(new Dimension(200, 40));
+        //myButton.setBounds(50, 50, 100, 50);
+        this.add(botColorCombobox);
+
+        botColorCombobox.setBounds(586 + insets.left, 270 + insets.top, size.width, size.height);
+        botColorCombobox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(botColorCombobox.getSelectedItem());
+            }
+        });
+
+
+
+
+
+
+        labelContainer = new JLabel(SettingBackground);
+        labelContainer.setSize(new Dimension(screenWidth, screenHeight));
+
+        this.add(backButton);
+
+        this.add(labelContainer);      // insert background img at last
+
+        //this.pack();
+        this.setVisible(true);
+
+        //centreWindow(this);
     }
 
     public void paintLeaderboardFrame() {
         openLeaderboard();
+
+
 
         try {
             BufferedReader csvReader = new BufferedReader(new FileReader("src\\score.csv"));
@@ -230,7 +340,8 @@ public class StartScreen extends JFrame implements ActionListener {
         for (int i = 0 ; i < data.length  ; i++) {
             JLabel l = new JLabel(data[i]);
             l.setBounds(80*(i+1), 30*rowCount, 120,30);
-            this.add(l);
+            labelContainer.add(l);
+            this.add(labelContainer);
         }
     }
 
@@ -240,8 +351,22 @@ public class StartScreen extends JFrame implements ActionListener {
         this.setLayout(null);
         this.setResizable(false);
         this.setSize(screenWidth,screenHeight);
+        //this.setVisible(true);
+
+        labelContainer = new JLabel(SettingBackground);
+        labelContainer.setSize(new Dimension(screenWidth, screenHeight));
+
+        this.add(backButton);
+
+        this.add(labelContainer);      // insert background img at last
+
+        //this.pack();
         this.setVisible(true);
+
     }
+
+
+
 
 
     @Override
@@ -251,7 +376,23 @@ public class StartScreen extends JFrame implements ActionListener {
             this.dispose();
             //paintFrame();
 
-            Main.runBotvsBot();
+
+//            try {
+//                //String[] args = "";
+//                SnakesUIMain.runBot();
+//            } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+//                     InvocationTargetException e1) {
+//                System.err.print("Error occurred!");
+//            }
+            SnakesUIMain.runningThread = false;
+            Runtime rt = Runtime.getRuntime();
+            try {
+                Process pr = rt.exec("cmd /c javac /DefaultBotFrameWork/SnakesUIMain.java & java SnakesUIMain");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+
         } else if (e.getSource() == settingsButton) {
             //GUI.SettingsFrame myWindow = new GUI.SettingsFrame();
             this.getContentPane().removeAll();
@@ -273,6 +414,17 @@ public class StartScreen extends JFrame implements ActionListener {
         } else if (e.getSource() == infoButton) {
 
         }
+        else if (e.getSource() == backButton) {
+            this.getContentPane().removeAll();
+            this.validate();
+            this.repaint();
+            this.paintStartScreen2();
+        }
 
+    }
+
+    @Override
+    public void run() {
+        paintStartScreen();
     }
 }

@@ -1,10 +1,15 @@
 package DefaultBotFrameWork;
 
+import DefaultBotFrameWork.*;
+import GUI.StartScreen;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Implements tournament of the snake game with several rounds
@@ -14,6 +19,11 @@ public class SnakesUIMain {
     private static final String LOG_DIRECTORY_PATH = "logs";
     private static FileWriter results_fw;
     private static int[][] total_results_table;
+
+    public static String bot01;
+    public static String bot02;
+
+    public static boolean runningThread = true;
 
 
     /**
@@ -30,7 +40,36 @@ public class SnakesUIMain {
 //            System.err.println("You must provide two classes implementing the Bot interface.");
 //            System.exit(1);
 //        }
+//        Thread t = new Thread(startScreen);
+//        t.start();
+//        t.join();
+//
+//        do {
+//            Thread.sleep(Long.MAX_VALUE);
+//        } while (runningThread);
 
+
+
+
+
+        //SnakesUIMain newGame = new SnakesUIMain();
+        ArrayList<Class<? extends Bot>> bots = new ArrayList<>();
+        BotLoader loader = new BotLoader();
+
+//        String bot01 = "Bot.tuna.tunaBot";
+//        String bot02 = "Bot.v_smirnov.V_smirnov";
+        Scanner in = new Scanner(System.in);
+        bot01 = "Bot.v_smirnov.V_smirnov";
+        bot02 = "Bot.v_smirnov.V_smirnov";
+        bots.add(loader.getBotClass(bot01));
+        bots.add(loader.getBotClass(bot02));
+
+        start_tournament_n_times(2, bots);
+
+    }
+
+
+    public static void runBot() throws InterruptedException, IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         ArrayList<Class<? extends Bot>> bots = new ArrayList<>();
         BotLoader loader = new BotLoader();
 
@@ -40,7 +79,6 @@ public class SnakesUIMain {
         bots.add(loader.getBotClass(bot02));
 
         start_tournament_n_times(2, bots);
-
     }
 
     /**
@@ -163,5 +201,11 @@ public class SnakesUIMain {
             results_fw.write(bots_names.get(playerNumber.get(i)) + " earned: " + points.get(playerNumber.get(i)).toString() + "\n");
         }
     }
+
+
+
+
+    // start screen class
+
 }
 
