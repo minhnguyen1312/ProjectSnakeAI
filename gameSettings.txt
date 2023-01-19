@@ -1,0 +1,8 @@
+playerName
+YourName
+boardColor
+black
+snakeColor
+red
+preyType
+apple

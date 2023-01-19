@@ -28,24 +28,34 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     JButton quitgameButton = new JButton();
     JButton infoButton = new JButton();
     JButton backButton = new JButton();
-
-    Combobox<String> botNameCombobox = new Combobox<>();
-    Combobox<String> bot1NameCombobox = new Combobox<>();
-    Combobox<String> bot2NameCombobox = new Combobox<>();
-
-    Combobox<String> botColorCombobox = new Combobox<>();
-    Combobox<String> playerColorCombobox = new Combobox<>();
+    JButton applySettingChanges = new JButton();
 
     private ImageIcon StartScreenBackground = new ImageIcon(this.getClass().getResource("/GUI/img/backgrv3.jpg"));
-    private ImageIcon SettingBackground = new ImageIcon(this.getClass().getResource("/GUI/img/settingsv2.jpg"));;
+    private ImageIcon SettingBackground = new ImageIcon(this.getClass().getResource("/GUI/img/settingsv3.png"));;
     private ImageIcon logo;
     private JLabel labelContainer;
 
     // Settings GUI.Frame
     static JButton applyChange = new JButton();
     //    static JPanel snake1 = new JPanel();
-//    static JPanel snake2 = new JPanel();
+    //    static JPanel snake2 = new JPanel();
+
+    // setting sections attributes
+
+    // single player
     private static JTextField playerNameTextField = new JTextField();
+    private static Combobox<String> playerColorCombobox = new Combobox<>();
+    private static Combobox<String> playerBoardColor = new Combobox<>();
+    private static Combobox<String> playerPreyType = new Combobox<>();
+
+
+    private static Combobox<String> bot1NameCombobox = new Combobox<>();
+    private static Combobox<String> bot2NameCombobox = new Combobox<>();
+    private static JTextField botNumberofTournaments = new JTextField();
+
+
+
+
 
 
     public static String snake1Name;
@@ -79,21 +89,45 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         backButton.setBackground(Color.black);
         backButton.addActionListener(this);
 
-        bot1NameCombobox.addItem("item2");
-        bot1NameCombobox.addItem("item3");
-        bot1NameCombobox.addItem("item4");
-        bot1NameCombobox.addItem("item5");
-        bot1NameCombobox.addItem("item6");
-
-        botColorCombobox.addItem("blue");
-        botColorCombobox.addItem("yellow");
-        botColorCombobox.addItem("green");
-        botColorCombobox.addItem("white");
-
+        playerColorCombobox.addItem("red");
         playerColorCombobox.addItem("blue");
         playerColorCombobox.addItem("yellow");
         playerColorCombobox.addItem("green");
         playerColorCombobox.addItem("white");
+
+        playerPreyType.addItem("apple");
+        playerPreyType.addItem("banana");
+        playerPreyType.addItem("blueberry");
+        playerPreyType.addItem("mouse");
+
+        playerBoardColor.addItem("black");
+        playerBoardColor.addItem("grey");
+        playerBoardColor.addItem("violet");
+        playerBoardColor.addItem("brown");
+        playerBoardColor.addItem("periwinkle");
+
+
+        applySettingChanges.setBounds(2 + 425,tileSize*14 + 2, tileSize*3 + 100,tileSize*1);
+        applySettingChanges.setText("Apply Changes");
+        applySettingChanges.setFont(new Font("Comic Sans",Font.BOLD,21));
+        applySettingChanges.setFocusable(false);
+        applySettingChanges.setHorizontalTextPosition(JButton.CENTER);
+        applySettingChanges.setVerticalTextPosition(JButton.CENTER);
+        applySettingChanges.setForeground(Color.white);
+        applySettingChanges.setBackground(new Color(16, 145, 55));
+        applySettingChanges.addActionListener(this);
+
+        bot1NameCombobox.addItem("a_zhuckov");
+        bot1NameCombobox.addItem("anhsBot");
+        bot1NameCombobox.addItem("johndoe");
+        bot1NameCombobox.addItem("tuna");
+        bot1NameCombobox.addItem("v_smirnov");
+
+        bot2NameCombobox.addItem("a_zhuckov");
+        bot2NameCombobox.addItem("anhsBot");
+        bot2NameCombobox.addItem("johndoe");
+        bot2NameCombobox.addItem("tuna");
+        bot2NameCombobox.addItem("v_smirnov");
 
     }
 
@@ -116,7 +150,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
         // paint all Buttons
         playButton.setBounds(tileSize*5,tileSize*3 + 50, tileSize*7,tileSize*1);
-        playButton.setText("PLAYER vs BOT");
+        playButton.setText("SINGLE PLAYER");
         playButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         playButton.setFocusable(false);
         playButton.setHorizontalTextPosition(JButton.CENTER);
@@ -273,42 +307,78 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(playerNameTextField);
         Insets insets = this.getInsets();
         Dimension size = playerNameTextField.getPreferredSize();
-        playerNameTextField.setBounds(245 + insets.left, 150 + insets.top, size.width, size.height);
+        playerNameTextField.setBounds(245 + insets.left, 142 + insets.top, size.width, size.height);
 
 
         playerColorCombobox.setPreferredSize(new Dimension(200, 40));
         //myButton.setBounds(50, 50, 100, 50);
         this.add(playerColorCombobox);
 
-        playerColorCombobox.setBounds(245 + insets.left, 270 + insets.top, size.width, size.height);
+        playerColorCombobox.setBounds(245 + insets.left, 255 + insets.top, size.width, size.height);
         playerColorCombobox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(playerColorCombobox.getSelectedItem());
+                //System.out.println(playerColorCombobox.getSelectedItem());
             }
         });
 
 
-        botColorCombobox.setPreferredSize(new Dimension(200, 40));
+        playerPreyType.setPreferredSize(new Dimension(200, 40));
         //myButton.setBounds(50, 50, 100, 50);
-        this.add(botColorCombobox);
+        this.add(playerPreyType);
 
-        botColorCombobox.setBounds(586 + insets.left, 270 + insets.top, size.width, size.height);
-        botColorCombobox.addActionListener(new ActionListener() {
+        playerPreyType.setBounds(586 + insets.left, 255 + insets.top, size.width, size.height);
+        playerPreyType.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(botColorCombobox.getSelectedItem());
+                //System.out.println(playerPreyType.getSelectedItem());
             }
         });
 
 
+        playerBoardColor.setPreferredSize(new Dimension(200, 40));
+        //myButton.setBounds(50, 50, 100, 50);
+        this.add(playerBoardColor);
+
+        playerBoardColor.setBounds(586 + insets.left, 142 + insets.top, size.width, size.height);
+        playerBoardColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println(playerBoardColor.getSelectedItem());
+            }
+        });
+
+        // botVsbot Settings
 
 
+        applySettingChanges.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    FileWriter myWriter = new FileWriter("gameSettings.txt");
+                    myWriter.write("playerName\n");
+                    myWriter.write(playerNameTextField.getText() + "\n");
+                    myWriter.write("boardColor\n");
+                    myWriter.write(playerBoardColor.getSelectedItem() + "\n");
+                    myWriter.write("snakeColor\n");
+                    myWriter.write(playerColorCombobox.getSelectedItem() + "\n");
+                    myWriter.write("preyType\n");
+                    myWriter.write((String) playerPreyType.getSelectedItem());
+                    myWriter.close();
+                    System.out.println("Successfully Change.");
+                } catch (IOException fileEx) {
+                    System.out.println("An error occurred.");
+                    fileEx.printStackTrace();
+                }
+            }
+        });
 
 
         labelContainer = new JLabel(SettingBackground);
         labelContainer.setSize(new Dimension(screenWidth, screenHeight));
 
+        this.add(applySettingChanges);
         this.add(backButton);
 
         this.add(labelContainer);      // insert background img at last
