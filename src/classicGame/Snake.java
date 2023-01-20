@@ -1,4 +1,4 @@
-package Bot.KeyController;
+package classicGame;
 import java.awt.*;
 
 public class Snake {

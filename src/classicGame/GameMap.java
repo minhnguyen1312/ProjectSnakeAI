@@ -1,4 +1,4 @@
-package Bot.KeyController;
+package classicGame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -91,14 +91,12 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
             boolean unoccupied = true;
             int xApple = r.nextInt(Config.WIDTH / appleSize);
             int yApple = r.nextInt(Config.HEIGHT / appleSize);
-            System.out.println(xApple + " " + yApple);
             for (int i = 0 ; i < snake1.getSnakeList().size() ; i++) {
                 if (xApple == snake1.getSnakeList().get(i).getxCoor() &&
                         yApple == snake1.getSnakeList().get(i).getyCoor()) {
                     unoccupied = false;//apple on snake!
                     break;
                 }
-                System.out.println("Why not true??");
             }
 
             if (unoccupied) {
@@ -113,7 +111,6 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
     public void checkSnake (SnakeAbstract snake, Graphics g) {
         if (!snake.isAliveStatus()) {
             //someone wins?
-            System.out.print("Whyyyy");
             saveResult();
             stop();
         } else {
@@ -132,7 +129,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
 
     private void saveResult() {
         try {
-            FileWriter write = new FileWriter("src\\score.csv",true);
+            FileWriter write = new FileWriter("classicGame/score.csv",true);
 
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
@@ -174,11 +171,8 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
             if (s.getxCoor() == aSnake.getSnakeList().get(i).getxCoor()
                     && s.getyCoor() == aSnake.getSnakeList().get(i).getyCoor()) {
                 aSnake.setAliveStatus(false);
-                System.out.print("collides on its own!!");
                 break;
             }
-            System.out.println("Not colliding");
-
         }
     }
 
@@ -187,15 +181,12 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (running) {
-            System.out.println("running?");
             repaint();
         }
     }
 
     public void paint(Graphics g) {
         g.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
-        System.out.println("Paint");
-
 
         //BACKGROUND color
         g.setColor(Config.BACKGROUND);

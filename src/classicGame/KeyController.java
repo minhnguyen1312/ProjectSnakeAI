@@ -1,8 +1,10 @@
+package classicGame;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 //<--- THIS IS RESPONSIBLE FOR A WHOLE BODY + ALIVE STATUS OF A SNAKE
-public class KeyController extends SnakeHeadAbstract {
+public class KeyController extends SnakeAbstract {
 
     public KeyController(Snake snake, Direction snakeDir, Color color) {
         super(snake, snakeDir, color);
@@ -29,3 +31,4 @@ public class KeyController extends SnakeHeadAbstract {
         }
     }
 }
+

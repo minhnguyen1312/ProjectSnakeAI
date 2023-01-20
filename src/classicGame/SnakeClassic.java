@@ -1,4 +1,4 @@
-package Bot.KeyController;
+package classicGame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

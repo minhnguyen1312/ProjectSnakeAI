@@ -1,4 +1,4 @@
-package Bot.KeyController;
+package classicGame;
 public class Coordinate {
     public int x;
     public int y;

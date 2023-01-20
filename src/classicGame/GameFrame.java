@@ -1,4 +1,4 @@
-package Bot.KeyController;
+package classicGame;
 import javax.swing.JFrame;
 
 public class GameFrame {

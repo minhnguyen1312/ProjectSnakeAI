@@ -1,4 +1,4 @@
-package Bot.KeyController;
+package classicGame;
 import java.awt.Color;
 
 public class Config {
