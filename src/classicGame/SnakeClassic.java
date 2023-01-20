@@ -4,12 +4,12 @@ import java.awt.event.KeyListener;
 
 
 public class SnakeClassic implements KeyListener {
-    private SnakeAbstract snake1;
+    private SnakeAbstract snake;
 
 
-    public SnakeClassic(SnakeAbstract snake1) {
+    public SnakeClassic(SnakeAbstract snake) {
         super();
-        this.snake1 = snake1;
+        this.snake = snake;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class SnakeClassic implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        snake1.keyPressed(key);
+        snake.keyPressed(key);
     }
 
     @Override

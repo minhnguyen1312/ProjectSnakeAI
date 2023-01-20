@@ -20,12 +20,12 @@ public abstract class SnakeAbstract implements Movable {
         this.aliveStatus = true;
     }
 
-    public List<Snake> getSnakeList() {
-        return snakeList;
+    public void addTail (Snake snake) {
+        this.snakeList.add(snake);
     }
 
-    public void setSnakeList(List<Snake> snakeList) {
-        this.snakeList = snakeList;
+    public List<Snake> getSnakeList() {
+        return snakeList;
     }
 
     public Direction getSnakeDir() {
@@ -53,24 +53,17 @@ public abstract class SnakeAbstract implements Movable {
         Direction currentDirection = snakeDir;
 
         Coordinate newCoordinate = getsHeadNewCoor(sHead.getXyCoor(), target, currentDirection);
-        Snake s = new Snake(newCoordinate.x, newCoordinate.y, sHead.getSize());
+        Snake s = new Snake(newCoordinate.x, newCoordinate.y);
         snakeList.add(s);
     }
 
     public void buildSnake(Graphics g) {
-        int size = snakeList.get(0).getSize();
-
         for (int i = 0; i < snakeList.size(); i++) {
-            System.out.println("Build");
-
-            int xCoor = snakeList.get(i).getxCoor();
-            int yCoor = snakeList.get(i).getyCoor();
-//            System.out.print(xCoor + " " + yCoor + " ");
-            Snake s = new Snake(xCoor, yCoor, size);
-            s.draw(g, this.snakeColor);// build body
-
+            snakeList.get(i).draw(g, this.snakeColor);// build body
         }
 
-        // build head\
+        // build head
+
+        snakeList.get(snakeList.size()-1).drawHead(g, new Color(255,255,255));
     }
 }

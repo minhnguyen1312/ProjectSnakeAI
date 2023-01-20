@@ -3,24 +3,27 @@ import java.awt.*;
 
 public class Snake {
     private Coordinate xyCoor;
-    private int  width, height;
-    public Snake(int xCoor, int yCoor, int size) {
+    public Snake(int xCoor, int yCoor) {
         this.xyCoor = new Coordinate(xCoor, yCoor);
-        this.width = size;
-        this.height = size;
     }
 
 
 
     public void draw (Graphics g, Color c) {
         g.setColor(c);
-        g.fillRect(xyCoor.x * width, xyCoor.y * height, width, height);
+        g.fillRect(xyCoor.x * Config.SQUARE_SIZE, xyCoor.y * Config.SQUARE_SIZE,
+                                    Config.SQUARE_SIZE, Config.SQUARE_SIZE);
+    }
+
+    public void drawHead (Graphics g, Color c) {
+        g.setColor(c);
+        g.fillRect(xyCoor.x * Config.SQUARE_SIZE + 2, xyCoor.y * Config.SQUARE_SIZE + 2,
+                                    Config.SQUARE_SIZE - 2, Config.SQUARE_SIZE - 2);
     }
 
 
     public int getxCoor () {return xyCoor.x;}
     public int getyCoor () {return xyCoor.y;}
     public Coordinate getXyCoor () {return xyCoor;}
-    public int getSize() {return width;}
 
 }

@@ -1,4 +1,5 @@
 package classicGame;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,11 +19,8 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
 
     private boolean running = false;
 
-    // <-- DEFAULT SETTING FOR SNAKE 1 ---> //
-    private static final int init1XCoor = 1, init1YCoor = 1;
-    //    private int snake1Size = 1;
-    private Direction dirSnake1 = Direction.RIGHT;
-
+    // <-- DEFAULT SETTING FOR SNAKE  ---> //
+    Snake classic = new Snake(0,0);
 
 
 
@@ -43,8 +41,9 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         setFocusable(true);
 
         setPreferredSize(new Dimension(Config.WIDTH, Config.HEIGHT));
-        snake1 = new KeyController(new Snake(init1XCoor, init1YCoor, Config.SQUARE_SIZE), dirSnake1, new Color(123,213,213));
-
+        snake1 = new KeyController(classic, Direction.RIGHT, new Color(123,213,213));
+        snake1.addTail(new Snake(1,0));
+        snake1.addTail(new Snake(1,1));
         SnakeClassic controlKey = new SnakeClassic(snake1);
         addKeyListener(controlKey);
 
@@ -58,7 +57,6 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
     public void start() {
         running = true;
         timer = new Timer(Config.DELAY, this);
-        timer.setInitialDelay(0);
         timer.start();
 
         //
@@ -68,9 +66,17 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         running = false;
     }
 
+    //     <--- GAME RUNNING ---> //
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (running) {
+            repaint();
+        }
+    }
+
     public void newApple(Graphics g) {
         if (!appleAppear || appleTimer == 1) {
-            //it disappears or 10secs passed
+            //it disappears or 20secs passed
             appleTimer = Config.appleTimer; //moves
             int[] appleCoor = findNonOccupiedAppleSpace();
             int xApple = appleCoor[0];
@@ -134,7 +140,8 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
 
-            List<String> record = Arrays.asList("Hoang","SnakeType",dtf.format(now));
+            //format for saving
+            List<String> record = Arrays.asList("Minh","SnakeType",dtf.format(now));
             write.append(String.join(",", record));
             write.append("\n");
             write.flush();
@@ -176,32 +183,12 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         }
     }
 
-
-    //     <--- GAME RUNNING ---> //
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (running) {
-            repaint();
-        }
-    }
-
     public void paint(Graphics g) {
         g.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
 
         //BACKGROUND color
         g.setColor(Config.BACKGROUND);
         g.fillRect(0, 0, Config.WIDTH, Config.HEIGHT);
-
-
-        //Grid color
-//        g.setColor(Color.GREEN);
-        // <--- DRAW GAME GRID ---> //
-//        for(int i = 0; i < HEIGHT / squareSize; ++i) {
-//            g.drawLine(i * squareSize, 0, i * squareSize, HEIGHT);
-//        }
-//        for (int i = 0; i < WIDTH / snake1Size ; i++) {
-//            g.drawLine(0, i * squareSize, WIDTH, i * squareSize);
-//        }
 
         newApple(g);
         checkSnake(snake1, g);
