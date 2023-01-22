@@ -34,13 +34,14 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
     private final ImageIcon StartScreenBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/backgrv3.jpg")));
     private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv4.png")));
+    private final ImageIcon StatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/gameStatistics.png")));
     private ImageIcon logo;
     private JLabel labelContainer;
 
     // Settings GUI.Frame
     JButton applySettingChanges = new JButton();
 
-    // setting sections attributes
+    JTable statisticsTable = new JTable();
 
     // single player
     private final static Combobox<String> gameDifficulty = new Combobox<>();
@@ -393,8 +394,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     public void paintLeaderboardFrame() {
         openLeaderboard();
 
-
-
         try {
             BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/score.csv"));
             for (int rowCounter = 1 ; rowCounter <= 10 && (row = csvReader.readLine()) != null ; rowCounter++) {
@@ -410,7 +409,9 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     private void drawRow_leaderboard(String[] data, int rowCount) {
         for (int i = 0 ; i < data.length  ; i++) {
             JLabel l = new JLabel(data[i]);
-            l.setBounds(80*(i+1), 30*rowCount, 120,30);
+            l.setFont(new Font("Arial", Font.BOLD, 20));
+            l.setForeground(Color.WHITE);
+            l.setBounds(80*(i+1) + 100, 30*rowCount + 150, 600,100);
             labelContainer.add(l);
             this.add(labelContainer);
         }
@@ -424,11 +425,14 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.setSize(screenWidth,screenHeight);
         //this.setVisible(true);
 
-        labelContainer = new JLabel(SettingBackground);
+        labelContainer = new JLabel(StatisticsBackground);
         labelContainer.setSize(new Dimension(screenWidth, screenHeight));
 
-        this.add(backButton);
+        //statisticsTable.setBounds(200, 200, 600, 200);
 
+
+//        this.add(statisticsTable);
+        this.add(backButton);
         this.add(labelContainer);      // insert background img at last
 
         //this.pack();

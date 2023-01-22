@@ -95,7 +95,7 @@ public class Config {
                 this.appleTimer = 30;
             }
             case "Mega Ultimate" -> {
-                this.DELAY = 10;
+                this.DELAY = 20;
                 this.appleTimer = 10;
             }
         }

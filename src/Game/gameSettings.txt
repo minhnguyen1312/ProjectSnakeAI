@@ -1,11 +1,11 @@
 gameDifficulty
-Hard
+Extreme
 boardColor
 black
 snakeColor
-yellow
+green
 preyType
-banana
+cherry
 bot01
 a_zhuchkov
 bot02

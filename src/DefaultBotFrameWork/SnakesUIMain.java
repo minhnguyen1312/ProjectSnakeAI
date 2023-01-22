@@ -59,7 +59,9 @@ public class SnakesUIMain {
         bots.add(loader.getBotClass(bot01));
         bots.add(loader.getBotClass(bot02));
 
-        start_tournament_n_times(2, bots);
+        int numberOfTournaments = Integer.parseInt(Files.readAllLines(path).get(14 - 1));
+
+        start_tournament_n_times(numberOfTournaments, bots);
 
     }
 
