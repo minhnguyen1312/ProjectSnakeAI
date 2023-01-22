@@ -8,6 +8,8 @@ public class KeyController extends SnakeAbstract {
 
     public KeyController(Snake snake, Direction snakeDir, Color color) {
         super(snake, snakeDir, color);
+        this.addTail(new Snake(Config.boundSquare+1,Config.boundSquare));
+        this.addTail(new Snake(Config.boundSquare+2,Config.boundSquare));
     }
 
     @Override

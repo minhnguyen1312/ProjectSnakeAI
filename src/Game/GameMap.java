@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -20,13 +21,13 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
 
 
     // <-- DEFAULT SETTING FOR SNAKE  ---> //
-    Snake classic = new Snake(Config.boundSquare,Config.boundSquare);
+    private Snake classic = new Snake(Config.boundSquare,Config.boundSquare);
 
 
 
     //<--- ARRAY OF EACH BODY PART ---> //
     //list <--- array easily overflown
-    private final SnakeAbstract snake1;
+    private SnakeAbstract snake1;
 
 
     // <--- APPLE SIZE ---> //
@@ -39,6 +40,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
 
     // Game stat
     private Integer score;
+    private Integer bestscore = 0;
     private String playerName;
 
     // Game Config
@@ -51,20 +53,18 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
 
         setFocusable(true);
         setPreferredSize(new Dimension(Config.WIDTH, Config.HEIGHT));
-        snake1 = new KeyController(classic, Direction.RIGHT, gameConfig.snakeColor);
 
-        snake1.addTail(new Snake(Config.boundSquare+1,Config.boundSquare));
-        snake1.addTail(new Snake(Config.boundSquare+2,Config.boundSquare));
+        snake1 = new KeyController(classic, Direction.RIGHT, gameConfig.snakeColor);
         SnakeClassic controlKey = new SnakeClassic(snake1);
         addKeyListener(controlKey);
 
         // init the score
         score = 0;
+        addKeyListener(this);//for space+enter
 
         r = new Random();
         appleAppear = false;
         start();
-        addKeyListener(this);
     }
 
 
@@ -75,8 +75,19 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
 
     public void stop() {
         Config.running = false;
+        timer.stop();
     }
+    private void reset() {
+        score = 0;
 
+        snake1 = new KeyController(classic, Direction.DOWN, gameConfig.snakeColor);
+        SnakeClassic controlKey = new SnakeClassic(snake1);
+        addKeyListener(controlKey);
+
+
+        repaint();
+        start();
+    }
     //     <--- GAME RUNNING ---> //
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -134,12 +145,19 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
     public void checkSnake (SnakeAbstract snake, Graphics g) {
         if (!snake.isAliveStatus()) {
             //end game
+            if (bestscore < score) {
+                bestscore = score;
+            }
+            System.out.println("The best score: " + bestscore);
+
             stop();
 //            saveResult();
         } else {
             snake.buildSnake(g);
             snake.movement(apple);
             snakeCollidesWall(snake);
+            snakeCollidesBody(snake);
+
 
             //snake eats apple?
             if (snakeEatApple(snake)) {
@@ -238,12 +256,11 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
 
         newApple(g);
         checkSnake(snake1, g);
-        snakeCollidesBody(snake1);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (!Config.running && e.getKeyCode() == KeyEvent.VK_SPACE) {
+        if (snake1.isAliveStatus() && e.getKeyCode() == KeyEvent.VK_SPACE) {
             Config.running = true;
         }
     }
