@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,10 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
+public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyListener {
 
 
-    private boolean running = false;
 
     // <-- DEFAULT SETTING FOR SNAKE  ---> //
     Snake classic = new Snake(Config.boundSquare,Config.boundSquare);
@@ -53,7 +54,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         snake1 = new KeyController(classic, Direction.RIGHT, gameConfig.snakeColor);
 
         snake1.addTail(new Snake(Config.boundSquare+1,Config.boundSquare));
-        snake1.addTail(new Snake(Config.boundSquare+1,Config.boundSquare+1));
+        snake1.addTail(new Snake(Config.boundSquare+2,Config.boundSquare));
         SnakeClassic controlKey = new SnakeClassic(snake1);
         addKeyListener(controlKey);
 
@@ -63,26 +64,23 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         r = new Random();
         appleAppear = false;
         start();
-
+        addKeyListener(this);
     }
 
 
     public void start() {
-        running = true;
         timer = new Timer(gameConfig.DELAY, this);
         timer.start();
-
-        //
     }
 
     public void stop() {
-        running = false;
+        Config.running = false;
     }
 
     //     <--- GAME RUNNING ---> //
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (running) {
+        if (Config.running) {
             repaint();
         }
     }
@@ -137,7 +135,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         if (!snake.isAliveStatus()) {
             //end game
             stop();
-            saveResult();
+//            saveResult();
         } else {
             snake.buildSnake(g);
             snake.movement(apple);
@@ -182,7 +180,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        System.exit(1);
+//        System.exit(1);
     }
 
     public boolean snakeEatApple(SnakeAbstract snake) {
@@ -194,9 +192,9 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
     public void snakeCollidesWall (SnakeAbstract snake) {
         int listSize = snake.getSnakeList().size();
         if (snake.getSnakeList().get(listSize - 1).getxCoor() < Config.boundSquare
-            || snake.getSnakeList().get(listSize - 1).getxCoor() > Config.WIDTH/ Config.SQUARE_SIZE - Config.boundSquare-1
-            || snake.getSnakeList().get(listSize - 1).getyCoor() < Config.boundSquare
-            || snake.getSnakeList().get(listSize - 1).getyCoor() > Config.HEIGHT/ Config.SQUARE_SIZE - Config.boundSquare-1) {
+                || snake.getSnakeList().get(listSize - 1).getxCoor() > Config.WIDTH/ Config.SQUARE_SIZE - Config.boundSquare-1
+                || snake.getSnakeList().get(listSize - 1).getyCoor() < Config.boundSquare
+                || snake.getSnakeList().get(listSize - 1).getyCoor() > Config.HEIGHT/ Config.SQUARE_SIZE - Config.boundSquare-1) {
             snake.setAliveStatus(false);
         }
     }
@@ -231,8 +229,8 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         // PLAYGROUND color
         g.setColor(Config.BACKGROUND);
         g.fillRect(Config.SQUARE_SIZE* Config.boundSquare, Config.SQUARE_SIZE*Config.boundSquare,
-                        Config.WIDTH - Config.SQUARE_SIZE*Config.boundSquare*2,
-                        Config.HEIGHT - Config.SQUARE_SIZE*Config.boundSquare*2);
+                Config.WIDTH - Config.SQUARE_SIZE*Config.boundSquare*2,
+                Config.HEIGHT - Config.SQUARE_SIZE*Config.boundSquare*2);
 
         g.setFont(Config.SCORE_FONT);
         g.setColor(Color.WHITE);
@@ -243,5 +241,14 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
         snakeCollidesBody(snake1);
     }
 
-
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (!Config.running && e.getKeyCode() == KeyEvent.VK_SPACE) {
+            Config.running = true;
+        }
+    }
+    @Override
+    public void keyTyped(KeyEvent e) {}
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }

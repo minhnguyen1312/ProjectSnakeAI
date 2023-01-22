@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Config {
+
+    public static boolean running = false;
+
     public static final int WIDTH = 750, HEIGHT = 750;
     public static final int SQUARE_SIZE = 30;
     public static final int boundSquare = 2;
