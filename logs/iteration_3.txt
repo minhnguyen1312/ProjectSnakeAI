@@ -1,6 +1,6 @@
-a_zhuchkov vs a_zhuchkov : 1 - 0 (Time taken: 39.308)
+a_zhuchkov vs anhsBot : 0 - 1 (Time taken: 6.689)
 
 -------------------------------------------
 
-a_zhuchkov earned: 1
 a_zhuchkov earned: 0
+anhsBot earned: 1
