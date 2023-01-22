@@ -1,0 +1,14 @@
+playerName
+Default Player
+boardColor
+black
+snakeColor
+red
+preyType
+apple
+bot01
+a_zhuckov
+bot02
+a_zhuckov
+numberOfTournaments
+2

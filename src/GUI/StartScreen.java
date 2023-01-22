@@ -1,6 +1,6 @@
 package GUI;
 
-import DefaultBotFrameWork.SnakesUIMain;
+import Game.GameFrame;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +31,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     JButton applySettingChanges = new JButton();
 
     private ImageIcon StartScreenBackground = new ImageIcon(this.getClass().getResource("/GUI/img/backgrv3.jpg"));
-    private ImageIcon SettingBackground = new ImageIcon(this.getClass().getResource("/GUI/img/settingsv3.png"));;
+    private ImageIcon SettingBackground = new ImageIcon(this.getClass().getResource("/GUI/img/settingsv3.1.png"));;
     private ImageIcon logo;
     private JLabel labelContainer;
 
@@ -97,7 +97,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
         playerPreyType.addItem("apple");
         playerPreyType.addItem("banana");
-        playerPreyType.addItem("blueberry");
+        playerPreyType.addItem("cherry");
         playerPreyType.addItem("mouse");
 
         playerBoardColor.addItem("black");
@@ -349,24 +349,59 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         });
 
         // botVsbot Settings
+        bot1NameCombobox.setPreferredSize(new Dimension(200, 40));
+        this.add(bot1NameCombobox);
+
+        bot1NameCombobox.setBounds(242 + insets.left, 430 + insets.top, size.width, size.height);
+        bot1NameCombobox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println(playerColorCombobox.getSelectedItem());
+            }
+        });
+
+        bot2NameCombobox.setPreferredSize(new Dimension(200, 40));
+        this.add(bot2NameCombobox);
+
+        bot2NameCombobox.setBounds(541 + insets.left, 430 + insets.top, size.width, size.height);
+        bot2NameCombobox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println(playerColorCombobox.getSelectedItem());
+            }
+        });
+
+
+        botNumberofTournaments.setPreferredSize(new Dimension(200, 40));
+        this.add(botNumberofTournaments);
+        botNumberofTournaments.setBounds(585 + insets.left, 553 + insets.top, size.width, size.height);
+
 
 
         applySettingChanges.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+
                 try {
-                    FileWriter myWriter = new FileWriter("gameSettings.txt");
+                    FileWriter myWriter = new FileWriter("./src/Game/gameSettings.txt");
                     myWriter.write("playerName\n");
-                    myWriter.write(playerNameTextField.getText() + "\n");
+                    myWriter.write(playerNameTextField.getText().isEmpty() ? "Default Player\n" : playerNameTextField.getText() + "\n");
                     myWriter.write("boardColor\n");
                     myWriter.write(playerBoardColor.getSelectedItem() + "\n");
                     myWriter.write("snakeColor\n");
                     myWriter.write(playerColorCombobox.getSelectedItem() + "\n");
                     myWriter.write("preyType\n");
-                    myWriter.write((String) playerPreyType.getSelectedItem());
+                    myWriter.write( playerPreyType.getSelectedItem() + "\n");
+                    myWriter.write("bot01\n");
+                    myWriter.write( bot1NameCombobox.getSelectedItem() + "\n");
+                    myWriter.write("bot02\n");
+                    myWriter.write( bot2NameCombobox.getSelectedItem() + "\n");
+                    myWriter.write("numberOfTournaments\n");
+                    myWriter.write( botNumberofTournaments.getText().isEmpty() ? "2" : botNumberofTournaments.getText());
                     myWriter.close();
                     System.out.println("Successfully Change.");
+                    //JOptionPane.showMessageDialog(null, "New Changes are applied!", "Game Settings", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IOException fileEx) {
                     System.out.println("An error occurred.");
                     fileEx.printStackTrace();
@@ -395,7 +430,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
 
         try {
-            BufferedReader csvReader = new BufferedReader(new FileReader("src\\score.csv"));
+            BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/score.csv"));
             for (int rowCounter = 1 ; rowCounter <= 10 && (row = csvReader.readLine()) != null ; rowCounter++) {
                 String[] data = row.split(",");
                 drawRow_leaderboard(data, rowCounter);
@@ -454,13 +489,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 //                     InvocationTargetException e1) {
 //                System.err.print("Error occurred!");
 //            }
-            SnakesUIMain.runningThread = false;
-            Runtime rt = Runtime.getRuntime();
-            try {
-                Process pr = rt.exec("cmd /c javac /DefaultBotFrameWork/SnakesUIMain.java & java SnakesUIMain");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+
+            new GameFrame();
 
 
         } else if (e.getSource() == settingsButton) {
