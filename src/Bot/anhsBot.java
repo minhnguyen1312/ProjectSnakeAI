@@ -1,4 +1,4 @@
-package Bot.anhsBot;
+package Bot;
 
 import DefaultBotFrameWork.Bot;
 import DefaultBotFrameWork.Coordinate;

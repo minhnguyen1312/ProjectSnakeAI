@@ -1,9 +1,10 @@
 package Game;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class GameFrame {
-    public GameFrame() {
+    public GameFrame() throws IOException {
         JFrame frame = new JFrame();
         GameMap map = new GameMap();
 

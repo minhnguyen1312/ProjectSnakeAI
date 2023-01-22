@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -40,27 +43,19 @@ public class SnakesUIMain {
 //            System.err.println("You must provide two classes implementing the Bot interface.");
 //            System.exit(1);
 //        }
-//        Thread t = new Thread(startScreen);
-//        t.start();
-//        t.join();
-//
-//        do {
-//            Thread.sleep(Long.MAX_VALUE);
-//        } while (runningThread);
-
-
-
 
 
         //SnakesUIMain newGame = new SnakesUIMain();
         ArrayList<Class<? extends Bot>> bots = new ArrayList<>();
         BotLoader loader = new BotLoader();
 
-//        String bot01 = "Bot.tuna.tunaBot";
-//        String bot02 = "Bot.v_smirnov.V_smirnov";
+        Path path = Paths.get("./src/Game/gameSettings.txt");
+        String bot01Input = "Bot." + Files.readAllLines(path).get(10 - 1);
+        String bot02Input = "Bot." + Files.readAllLines(path).get(12 - 1);
+
         Scanner in = new Scanner(System.in);
-        bot01 = "Bot.v_smirnov.V_smirnov";
-        bot02 = "Bot.v_smirnov.V_smirnov";
+        bot01 = bot01Input;
+        bot02 = bot02Input;
         bots.add(loader.getBotClass(bot01));
         bots.add(loader.getBotClass(bot02));
 

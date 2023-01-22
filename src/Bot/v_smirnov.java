@@ -1,4 +1,4 @@
-package Bot.v_smirnov;
+package Bot;
 
 import DefaultBotFrameWork.Bot;
 import DefaultBotFrameWork.Coordinate;
@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Random;
 
-public class V_smirnov implements Bot {
+public class v_smirnov implements Bot {
     // by Vladislav Smirnov
     // Extends Bot_n_strygin by Nikita Strygin
 

@@ -6,11 +6,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.Objects;
 import javax.swing.*;
 
 
 public class StartScreen extends JFrame implements ActionListener, Runnable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     //SCREEN SETTINGS
     final int originalTile = 16; //16*16
@@ -24,47 +26,33 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
     JButton playButton = new JButton();
     JButton settingsButton = new JButton();
-    JButton leaderboardButton = new JButton();
+    JButton statisticsButton = new JButton();
     JButton quitgameButton = new JButton();
     JButton infoButton = new JButton();
     JButton backButton = new JButton();
-    JButton applySettingChanges = new JButton();
 
-    private ImageIcon StartScreenBackground = new ImageIcon(this.getClass().getResource("/GUI/img/backgrv3.jpg"));
-    private ImageIcon SettingBackground = new ImageIcon(this.getClass().getResource("/GUI/img/settingsv3.1.png"));;
+
+    private final ImageIcon StartScreenBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/backgrv3.jpg")));
+    private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv4.png")));
     private ImageIcon logo;
     private JLabel labelContainer;
 
     // Settings GUI.Frame
-    static JButton applyChange = new JButton();
-    //    static JPanel snake1 = new JPanel();
-    //    static JPanel snake2 = new JPanel();
+    JButton applySettingChanges = new JButton();
 
     // setting sections attributes
 
     // single player
-    private static JTextField playerNameTextField = new JTextField();
-    private static Combobox<String> playerColorCombobox = new Combobox<>();
-    private static Combobox<String> playerBoardColor = new Combobox<>();
-    private static Combobox<String> playerPreyType = new Combobox<>();
+    private final static Combobox<String> gameDifficulty = new Combobox<>();
+    private final static Combobox<String> playerColorCombobox = new Combobox<>();
+    private final static Combobox<String> playerBoardColor = new Combobox<>();
+    private final static Combobox<String> playerPreyType = new Combobox<>();
 
 
-    private static Combobox<String> bot1NameCombobox = new Combobox<>();
-    private static Combobox<String> bot2NameCombobox = new Combobox<>();
-    private static JTextField botNumberofTournaments = new JTextField();
+    private final static Combobox<String> bot1NameCombobox = new Combobox<>();
+    private final static Combobox<String> bot2NameCombobox = new Combobox<>();
+    private final static JTextField botNumberofTournaments = new JTextField();
 
-
-
-
-
-
-    public static String snake1Name;
-    public static int snake1Type;
-    public static Color snake1Color;
-
-    public static String snake2Name;
-    public static int snake2Type;
-    public static Color snake2Color;
 
     // Leaderboard
     String row = "";
@@ -79,7 +67,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     public StartScreen() {
         //paintStartScreen();
 
-        backButton.setBounds(2 + 680,tileSize*14 + 2, tileSize*3,tileSize*1);
+        backButton.setBounds(2 + 680,tileSize*14 + 2, tileSize*3,tileSize);
         backButton.setText("Back");
         backButton.setFont(new Font("Comic Sans",Font.BOLD,21));
         backButton.setFocusable(false);
@@ -89,11 +77,19 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         backButton.setBackground(Color.black);
         backButton.addActionListener(this);
 
+        gameDifficulty.addItem("Easy");
+        gameDifficulty.addItem("Normal");
+        gameDifficulty.addItem("Hard");
+        gameDifficulty.addItem("Extreme");
+        gameDifficulty.addItem("Mega Ultimate");
+
+
         playerColorCombobox.addItem("red");
         playerColorCombobox.addItem("blue");
         playerColorCombobox.addItem("yellow");
         playerColorCombobox.addItem("green");
         playerColorCombobox.addItem("white");
+        playerColorCombobox.addItem("sky blue");
 
         playerPreyType.addItem("apple");
         playerPreyType.addItem("banana");
@@ -107,7 +103,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         playerBoardColor.addItem("periwinkle");
 
 
-        applySettingChanges.setBounds(2 + 425,tileSize*14 + 2, tileSize*3 + 100,tileSize*1);
+        applySettingChanges.setBounds(2 + 425,tileSize*14 + 2, tileSize*3 + 100,tileSize);
         applySettingChanges.setText("Apply Changes");
         applySettingChanges.setFont(new Font("Comic Sans",Font.BOLD,21));
         applySettingChanges.setFocusable(false);
@@ -117,39 +113,30 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         applySettingChanges.setBackground(new Color(16, 145, 55));
         applySettingChanges.addActionListener(this);
 
-        bot1NameCombobox.addItem("a_zhuckov");
+        bot1NameCombobox.addItem("a_zhuchkov");
         bot1NameCombobox.addItem("anhsBot");
-        bot1NameCombobox.addItem("johndoe");
-        bot1NameCombobox.addItem("tuna");
+        bot1NameCombobox.addItem("SampleBot");
+        bot1NameCombobox.addItem("tunaBot");
         bot1NameCombobox.addItem("v_smirnov");
 
-        bot2NameCombobox.addItem("a_zhuckov");
+        bot2NameCombobox.addItem("a_zhuchkov");
         bot2NameCombobox.addItem("anhsBot");
-        bot2NameCombobox.addItem("johndoe");
-        bot2NameCombobox.addItem("tuna");
+        bot2NameCombobox.addItem("SampleBot");
+        bot2NameCombobox.addItem("tunaBot");
         bot2NameCombobox.addItem("v_smirnov");
 
     }
 
-    public void paintFrame() {
-        //SnakesUIMain newFrame = new SnakesUIMain();
-//        try {
-//            //String[] args = "";
-//            SnakesUIMain.main(null);
-//        } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-//            System.err.print("Error occurred!");
-//        }
-    }
 
     public void paintStartScreen() {
-        logo = new ImageIcon(this.getClass().getResource("/GUI/img/logo.png"));
+        logo = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/logo.png")));
         this.setIconImage(logo.getImage());
 
         labelContainer = new JLabel(StartScreenBackground);
         labelContainer.setSize(new Dimension(screenWidth, screenHeight));
 
         // paint all Buttons
-        playButton.setBounds(tileSize*5,tileSize*3 + 50, tileSize*7,tileSize*1);
+        playButton.setBounds(tileSize*5,tileSize*3 + 50, tileSize*7,tileSize);
         playButton.setText("SINGLE PLAYER");
         playButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         playButton.setFocusable(false);
@@ -163,7 +150,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         //Dimension size = playButton.getPreferredSize();
 
 
-        settingsButton.setBounds(tileSize*5,tileSize*3 + 140, tileSize*7,tileSize*1);
+        settingsButton.setBounds(tileSize*5,tileSize*3 + 140, tileSize*7,tileSize);
         settingsButton.setText("SETTINGS");
         settingsButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         settingsButton.setFocusable(false);
@@ -173,18 +160,18 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         settingsButton.setBackground(new Color(0,204,102));
         settingsButton.addActionListener(this);
 
-        leaderboardButton.setBounds(tileSize*5,tileSize*3 + 230, tileSize*7,tileSize*1);
-        leaderboardButton.setText("LEADERBOARD");
-        leaderboardButton.setFont(new Font("Comic Sans",Font.BOLD,25));
-        leaderboardButton.setFocusable(false);
-        leaderboardButton.setHorizontalTextPosition(JButton.CENTER);
-        leaderboardButton.setVerticalTextPosition(JButton.CENTER);
-        leaderboardButton.setForeground(Color.white);
-        leaderboardButton.setBackground(new Color(0,204,102));
-        leaderboardButton.addActionListener(this);
+        statisticsButton.setBounds(tileSize*5,tileSize*3 + 230, tileSize*7,tileSize);
+        statisticsButton.setText("STATISTICS");
+        statisticsButton.setFont(new Font("Comic Sans",Font.BOLD,25));
+        statisticsButton.setFocusable(false);
+        statisticsButton.setHorizontalTextPosition(JButton.CENTER);
+        statisticsButton.setVerticalTextPosition(JButton.CENTER);
+        statisticsButton.setForeground(Color.white);
+        statisticsButton.setBackground(new Color(0,204,102));
+        statisticsButton.addActionListener(this);
 
 
-        quitgameButton.setBounds(tileSize*5,tileSize*3 + 320, tileSize*7,tileSize*1);
+        quitgameButton.setBounds(tileSize*5,tileSize*3 + 320, tileSize*7,tileSize);
         quitgameButton.setText("QUIT GAME");
         quitgameButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         quitgameButton.setFocusable(false);
@@ -195,8 +182,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         quitgameButton.addActionListener(this);
 
 
-        infoButton.setBounds(2 + 5,tileSize*14 - 10, tileSize*3,tileSize*1);
-        infoButton.setText("About us");
+        infoButton.setBounds(2 + 5,tileSize*14 - 10, tileSize*3,tileSize);
+        infoButton.setText("Credits");
         infoButton.setFont(new Font("Comic Sans",Font.BOLD,21));
         infoButton.setFocusable(false);
         infoButton.setHorizontalTextPosition(JButton.CENTER);
@@ -221,7 +208,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.getContentPane().setBackground(new Color(102,204,0));
         this.add(playButton);
         this.add(settingsButton);
-        this.add(leaderboardButton);
+        this.add(statisticsButton);
         this.add(quitgameButton);
         this.add(infoButton);
 
@@ -252,7 +239,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.getContentPane().setBackground(new Color(102,204,0));
         this.add(playButton);
         this.add(settingsButton);
-        this.add(leaderboardButton);
+        this.add(statisticsButton);
         this.add(quitgameButton);
         this.add(infoButton);
 
@@ -301,13 +288,12 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 //        this.add(textSnake2Color);
 
 
-
-
-        playerNameTextField.setPreferredSize(new Dimension(200, 40));
-        this.add(playerNameTextField);
+        gameDifficulty.setPreferredSize(new Dimension(200, 40));
+        this.add(gameDifficulty);
         Insets insets = this.getInsets();
-        Dimension size = playerNameTextField.getPreferredSize();
-        playerNameTextField.setBounds(245 + insets.left, 142 + insets.top, size.width, size.height);
+        Dimension size = gameDifficulty.getPreferredSize();
+        gameDifficulty.setBounds(245 + insets.left, 142 + insets.top, size.width, size.height);
+        gameDifficulty.addActionListener(this);
 
 
         playerColorCombobox.setPreferredSize(new Dimension(200, 40));
@@ -315,11 +301,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(playerColorCombobox);
 
         playerColorCombobox.setBounds(245 + insets.left, 255 + insets.top, size.width, size.height);
-        playerColorCombobox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println(playerColorCombobox.getSelectedItem());
-            }
+        playerColorCombobox.addActionListener(e -> {
+            //System.out.println(playerColorCombobox.getSelectedItem());
         });
 
 
@@ -328,11 +311,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(playerPreyType);
 
         playerPreyType.setBounds(586 + insets.left, 255 + insets.top, size.width, size.height);
-        playerPreyType.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println(playerPreyType.getSelectedItem());
-            }
+        playerPreyType.addActionListener(e -> {
+            //System.out.println(playerPreyType.getSelectedItem());
         });
 
 
@@ -341,11 +321,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(playerBoardColor);
 
         playerBoardColor.setBounds(586 + insets.left, 142 + insets.top, size.width, size.height);
-        playerBoardColor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println(playerBoardColor.getSelectedItem());
-            }
+        playerBoardColor.addActionListener(e -> {
+            //System.out.println(playerBoardColor.getSelectedItem());
         });
 
         // botVsbot Settings
@@ -353,59 +330,48 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(bot1NameCombobox);
 
         bot1NameCombobox.setBounds(242 + insets.left, 430 + insets.top, size.width, size.height);
-        bot1NameCombobox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println(playerColorCombobox.getSelectedItem());
-            }
+        bot1NameCombobox.addActionListener(e -> {
+            //System.out.println(playerColorCombobox.getSelectedItem());
         });
 
         bot2NameCombobox.setPreferredSize(new Dimension(200, 40));
         this.add(bot2NameCombobox);
 
         bot2NameCombobox.setBounds(541 + insets.left, 430 + insets.top, size.width, size.height);
-        bot2NameCombobox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //System.out.println(playerColorCombobox.getSelectedItem());
-            }
+        bot2NameCombobox.addActionListener(e -> {
+            //System.out.println(playerColorCombobox.getSelectedItem());
         });
 
 
         botNumberofTournaments.setPreferredSize(new Dimension(200, 40));
         this.add(botNumberofTournaments);
-        botNumberofTournaments.setBounds(585 + insets.left, 553 + insets.top, size.width, size.height);
+        botNumberofTournaments.setBounds(593 + insets.left, 553 + insets.top, size.width, size.height);
 
 
 
-        applySettingChanges.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-                try {
-                    FileWriter myWriter = new FileWriter("./src/Game/gameSettings.txt");
-                    myWriter.write("playerName\n");
-                    myWriter.write(playerNameTextField.getText().isEmpty() ? "Default Player\n" : playerNameTextField.getText() + "\n");
-                    myWriter.write("boardColor\n");
-                    myWriter.write(playerBoardColor.getSelectedItem() + "\n");
-                    myWriter.write("snakeColor\n");
-                    myWriter.write(playerColorCombobox.getSelectedItem() + "\n");
-                    myWriter.write("preyType\n");
-                    myWriter.write( playerPreyType.getSelectedItem() + "\n");
-                    myWriter.write("bot01\n");
-                    myWriter.write( bot1NameCombobox.getSelectedItem() + "\n");
-                    myWriter.write("bot02\n");
-                    myWriter.write( bot2NameCombobox.getSelectedItem() + "\n");
-                    myWriter.write("numberOfTournaments\n");
-                    myWriter.write( botNumberofTournaments.getText().isEmpty() ? "2" : botNumberofTournaments.getText());
-                    myWriter.close();
-                    System.out.println("Successfully Change.");
-                    //JOptionPane.showMessageDialog(null, "New Changes are applied!", "Game Settings", JOptionPane.INFORMATION_MESSAGE);
-                } catch (IOException fileEx) {
-                    System.out.println("An error occurred.");
-                    fileEx.printStackTrace();
-                }
+        applySettingChanges.addActionListener(e -> {
+            try {
+                FileWriter myWriter = new FileWriter("./src/Game/gameSettings.txt");
+                myWriter.write("gameDifficulty\n");
+                myWriter.write(gameDifficulty.getSelectedItem() + "\n");
+                myWriter.write("boardColor\n");
+                myWriter.write(playerBoardColor.getSelectedItem() + "\n");
+                myWriter.write("snakeColor\n");
+                myWriter.write(playerColorCombobox.getSelectedItem() + "\n");
+                myWriter.write("preyType\n");
+                myWriter.write( playerPreyType.getSelectedItem() + "\n");
+                myWriter.write("bot01\n");
+                myWriter.write( bot1NameCombobox.getSelectedItem() + "\n");
+                myWriter.write("bot02\n");
+                myWriter.write( bot2NameCombobox.getSelectedItem() + "\n");
+                myWriter.write("numberOfTournaments\n");
+                myWriter.write( botNumberofTournaments.getText().isEmpty() ? "5" : botNumberofTournaments.getText());
+                myWriter.close();
+                System.out.println("Successfully Change.");
+                //JOptionPane.showMessageDialog(null, "New Changes are applied!", "Game Settings", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException fileEx) {
+                System.out.println("An error occurred.");
+                fileEx.printStackTrace();
             }
         });
 
@@ -479,18 +445,11 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         if(e.getSource() == playButton) {
             this.setVisible(false);
             this.dispose();
-            //paintFrame();
-
-
-//            try {
-//                //String[] args = "";
-//                SnakesUIMain.runBot();
-//            } catch (InterruptedException | IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
-//                     InvocationTargetException e1) {
-//                System.err.print("Error occurred!");
-//            }
-
-            new GameFrame();
+            try {
+                new GameFrame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
 
 
         } else if (e.getSource() == settingsButton) {
@@ -499,7 +458,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             this.validate();
             this.repaint();
             this.paintSettingsFrame();
-        } else if (e.getSource() == leaderboardButton) {
+        } else if (e.getSource() == statisticsButton) {
             this.getContentPane().removeAll();
             this.validate();
             this.repaint();
@@ -512,7 +471,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             }
 
         } else if (e.getSource() == infoButton) {
-
+            JOptionPane.showMessageDialog(null, "Snake Revolution\nversion 1.0.0\n\nAuthors:\nNguyen Phuoc Bao Minh\nNguyen Vu Doanh Khoa\nVu Hoang Tuan Anh\nBa Nguyen Quoc Anh", "About us", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (e.getSource() == backButton) {
             this.getContentPane().removeAll();

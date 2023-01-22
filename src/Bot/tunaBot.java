@@ -1,4 +1,4 @@
-package Bot.tuna;
+package Bot;
 
 import DefaultBotFrameWork.Bot;
 import DefaultBotFrameWork.Coordinate;
@@ -46,13 +46,13 @@ public class tunaBot implements Bot {
         if (notLosing.length > 0){
             for (int i = 0; i < notLosing.length; ++i) {
                 //debug
-               System.out.print(i + " --- " + notLosing[i].dx + ", " + notLosing[i].dy + "\n");
-               System.out.print(afterHead.toString() + "\n");
+               //System.out.print(i + " --- " + notLosing[i].dx + ", " + notLosing[i].dy + "\n");
+               //System.out.print(afterHead.toString() + "\n");
             }
 
             // new implementation for randomness of the indexes of notLosing Direction array
-//            int range = maximum - minimum + 1;
-//            int randomNum =  rnd.nextInt(range) + minimum;
+            int range = maximum - minimum + 1;
+            int randomNum =  rnd.nextInt(range) + minimum;
 
             return notLosing[0];
         }

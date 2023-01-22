@@ -25,12 +25,12 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
 
     //<--- ARRAY OF EACH BODY PART ---> //
     //list <--- array easily overflown
-    private SnakeAbstract snake1;
+    private final SnakeAbstract snake1;
 
 
     // <--- APPLE SIZE ---> //
     private Apple apple;
-    private int appleSize = Config.SQUARE_SIZE;
+    private final int appleSize = Config.SQUARE_SIZE;
     private boolean appleAppear;
     private int appleTimer; //moves
     private Timer timer;
@@ -40,17 +40,26 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
     private Integer score;
     private String playerName;
 
-    public GameMap() {
-        setFocusable(true);
+    // Game Config
+    private Config gameConfig;
 
+    public GameMap() throws IOException {
+        // init the game Config
+        gameConfig = new Config();
+        gameConfig.loadAllConfig();
+
+        setFocusable(true);
         setPreferredSize(new Dimension(Config.WIDTH, Config.HEIGHT));
-        snake1 = new KeyController(classic, Direction.RIGHT, new Color(123,213,213));
+        snake1 = new KeyController(classic, Direction.RIGHT, gameConfig.snakeColor);
+
         snake1.addTail(new Snake(Config.boundSquare+1,Config.boundSquare));
         snake1.addTail(new Snake(Config.boundSquare+1,Config.boundSquare+1));
         SnakeClassic controlKey = new SnakeClassic(snake1);
         addKeyListener(controlKey);
 
+        // init the score
         score = 0;
+
         r = new Random();
         appleAppear = false;
         start();
@@ -60,7 +69,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
 
     public void start() {
         running = true;
-        timer = new Timer(Config.DELAY, this);
+        timer = new Timer(gameConfig.DELAY, this);
         timer.start();
 
         //
@@ -81,7 +90,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
     public void newApple(Graphics g) {
         if (!appleAppear || appleTimer == 1) {
             //it disappears or 20secs passed
-            appleTimer = Config.appleTimer; //moves
+            appleTimer = gameConfig.appleTimer; //moves
             int[] appleCoor = findNonOccupiedAppleSpace();
             int xApple = appleCoor[0];
             int yApple = appleCoor[1];
@@ -159,11 +168,13 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
             LocalDateTime now = LocalDateTime.now();
 
             // ask for the Name of player
-            playerName = "DefaultPlayer";
             playerName = JOptionPane.showInputDialog("Enter your name");
+            if (playerName.equals("")) {
+                playerName = "DefaultPlayer";
+            }
 
             //format for saving
-            List<String> record = Arrays.asList(playerName,score.toString(),"MODE","PREY_SKIN",dtf.format(now));
+            List<String> record = Arrays.asList(playerName,score.toString(),gameConfig.gameDifficulty,apple.getSkin(),dtf.format(now));
             write.append(String.join(",", record));
             write.append("\n");
             write.flush();
@@ -176,12 +187,8 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener {
 
     public boolean snakeEatApple(SnakeAbstract snake) {
         int snakeSize = snake.getSnakeList().size();
-        if (snake.getSnakeList().get(snakeSize-1).getxCoor() == apple.getxApple()
-                && snake.getSnakeList().get(snakeSize-1).getyCoor() == apple.getyApple()) {
-            return true;
-        }
-
-        return false;
+        return snake.getSnakeList().get(snakeSize - 1).getxCoor() == apple.getxApple()
+                && snake.getSnakeList().get(snakeSize - 1).getyCoor() == apple.getyApple();
     }
 
     public void snakeCollidesWall (SnakeAbstract snake) {

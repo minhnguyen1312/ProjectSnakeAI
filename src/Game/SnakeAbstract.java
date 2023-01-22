@@ -64,7 +64,6 @@ public abstract class SnakeAbstract implements Movable {
         }
 
         // build head
-
         snakeList.get(snakeList.size()-1).drawHead(g, Color.WHITE);
     }
 }
