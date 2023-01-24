@@ -34,7 +34,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
     private final ImageIcon StartScreenBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/backgrv3.jpg")));
     private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv4.png")));
-    private final ImageIcon StatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/gameStatistics.png")));
+    private final ImageIcon StatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/gameStatisticsv3.png")));
     private ImageIcon logo;
     private JLabel labelContainer;
 
@@ -98,7 +98,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         playerPreyType.addItem("mouse");
 
         playerBoardColor.addItem("black");
-        playerBoardColor.addItem("grey");
+        playerBoardColor.addItem("gray");
         playerBoardColor.addItem("violet");
         playerBoardColor.addItem("brown");
         playerBoardColor.addItem("periwinkle");

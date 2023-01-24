@@ -1,5 +1,5 @@
 gameDifficulty
-Easy
+Mega Ultimate
 boardColor
 black
 snakeColor
@@ -9,6 +9,6 @@ apple
 bot01
 a_zhuchkov
 bot02
-anhsBot
+a_zhuchkov
 numberOfTournaments
 5

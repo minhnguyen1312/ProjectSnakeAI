@@ -119,8 +119,16 @@ public class Config {
     }
 
 
-    public void loadBoardColor() {
+    public void loadBoardColor() throws IOException {
+        String boardColorInput = Files.readAllLines(Paths.get("./src/Game/gameSettings.txt")).get(4 - 1);
 
+        switch (boardColorInput) {
+            case "black" -> this.boardColor = Color.BLACK;
+            case "gray" -> this.boardColor = Color.GRAY;
+            case "violet" -> this.boardColor = new Color(127, 0, 255);
+            case "brown" -> this.boardColor = new Color(150,75,0);
+            case "periwinkle" -> this.boardColor = new Color(204, 204, 255);
+        }
     }
 
 }

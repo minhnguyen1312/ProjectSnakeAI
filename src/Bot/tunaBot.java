@@ -54,7 +54,7 @@ public class tunaBot implements Bot {
             int range = maximum - minimum + 1;
             int randomNum =  rnd.nextInt(range) + minimum;
 
-            return notLosing[0];
+            return notLosing[randomNum];
         }
         else
             return validMoves[0];

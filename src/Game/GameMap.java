@@ -151,7 +151,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
             System.out.println("The best score: " + bestscore);
 
             stop();
-//            saveResult();
+            saveResult();
         } else {
             snake.buildSnake(g);
             snake.movement(apple);
@@ -184,13 +184,9 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
             LocalDateTime now = LocalDateTime.now();
 
             // ask for the Name of player
-            playerName = JOptionPane.showInputDialog("Enter your name");
-            if (playerName.equals("")) {
-                playerName = "DefaultPlayer";
-            }
 
             //format for saving
-            List<String> record = Arrays.asList(playerName,score.toString(),gameConfig.gameDifficulty,apple.getSkin(),dtf.format(now));
+            List<String> record = Arrays.asList("Player",score.toString(),gameConfig.gameDifficulty,apple.getSkin(),dtf.format(now));
             write.append(String.join(",", record));
             write.append("\n");
             write.flush();
@@ -198,7 +194,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//        System.exit(1);
+        System.exit(1);
     }
 
     public boolean snakeEatApple(SnakeAbstract snake) {
@@ -233,7 +229,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
         g.clearRect(0, 0, Config.WIDTH, Config.HEIGHT);
 
         //BACKGROUND color
-        g.setColor(Config.GAMEBOUND);
+        g.setColor(gameConfig.boardColor);
         g.fillRect(0, 0, Config.WIDTH, Config.HEIGHT);
 
         // draw grid
