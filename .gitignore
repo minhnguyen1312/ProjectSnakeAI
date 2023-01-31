@@ -5,3 +5,4 @@ README.md
 *.xml
 ProjectSnakeAI.iml
 *.class
+/bin/
