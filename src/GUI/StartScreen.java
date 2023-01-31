@@ -452,13 +452,13 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         } else if (e.getSource() == infoButton) {
             JOptionPane.showMessageDialog(null, new MessageWithLink("Snake Revolution" +
                     "<br>version 1.0.0<br><br>" +
-                    "Authors:<br>" +
+                    "▶ Authors:<br>" +
                     "Nguyen Phuoc Bao Minh<br>" +
                     "Nguyen Vu Doanh Khoa<br>" +
                     "Vu Hoang Tuan Anh<br>" +
                     "Ba Nguyen Quoc Anh<br><br>" +
-                    "Project Link on Github: " +
-                    "<a href=\"https://github.com/minhnguyen1312/ProjectSnakeAI\">Here</a>"));
+                    "▶ Project Link on Github:<br>" +
+                    "<a href=\"https://github.com/minhnguyen1312/ProjectSnakeAI\">https://github.com/minhnguyen1312/ProjectSnakeAI</a>"), "About us", JOptionPane.INFORMATION_MESSAGE);
             //JOptionPane.showMessageDialog(null, "Snake Revolution\nversion 1.0.0\n\nAuthors:\nNguyen Phuoc Bao Minh\nNguyen Vu Doanh Khoa\nVu Hoang Tuan Anh\nBa Nguyen Quoc Anh", "About us", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (e.getSource() == backButton) {
