@@ -35,14 +35,8 @@ public class Config {
     public int appleTimer;
 
     // GAME MODE
-    public String gameDifficulty;
-    public enum GameMode {
-        EASY,
-        NORMAL,
-        HARD,
-        EXTREME,
-        MEGA_ULTIMATE
-    }
+    public GameDifficulty gameDifficulty;
+
 
     // Snake Config
     public Color snakeColor;
@@ -77,27 +71,27 @@ public class Config {
 
     // load game Difficulty
     public void loadGameDifficulty() throws IOException {
-        String gameModeInput = Files.readAllLines(Paths.get("./src/Game/gameSettings.txt")).get(2 - 1);
+        GameDifficulty gameModeInput = GameDifficulty.valueOf(Files.readAllLines(Paths.get("./src/Game/gameSettings.txt")).get(1));
         this.gameDifficulty = gameModeInput;
 
         switch (gameModeInput) {
-            case "Easy" -> {
+            case Easy -> {
                 this.DELAY = 125;
                 this.appleTimer = 80;
             }
-            case "Normal" -> {
+            case Normal -> {
                 this.DELAY = 100;
                 this.appleTimer = 65;
             }
-            case "Hard" -> {
+            case Hard -> {
                 this.DELAY = 60;
                 this.appleTimer = 40;
             }
-            case "Extreme" -> {
+            case Extreme -> {
                 this.DELAY = 30;
                 this.appleTimer = 30;
             }
-            case "Mega Ultimate" -> {
+            case Ultra -> {
                 this.DELAY = 20;
                 this.appleTimer = 10;
             }

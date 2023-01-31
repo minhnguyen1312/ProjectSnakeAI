@@ -11,12 +11,6 @@ public class Apple {
     private Config mySkin;
 
     public Apple (int xApple, int yApple, int size) {
-//        try {
-//            skin = ImageIO.read(new File("./skin/apple.png"));
-//        } catch (IOException e) {
-//            didLoadSkin = false;
-//        }
-
         this.appleCoor = new Coordinate(xApple, yApple);
         this.width = size;
         this.height = size;
@@ -24,12 +18,6 @@ public class Apple {
 
 
     public void drawApple (Graphics g) {
-//        g.setColor(Color.RED);
-//        g.fillOval(appleCoor.x * width, appleCoor.y * height, width, height);
-
-            //g.setColor(Color.RED);
-            //g.fillOval(appleCoor.x * width, appleCoor.y * height, width, height);
-
         try {
             mySkin = new Config();
             mySkin.loadPreySkin();
@@ -40,8 +28,6 @@ public class Apple {
             g.fillOval(appleCoor.x * width, appleCoor.y * height, width, height);
             //ex.printStackTrace();
         }
-
-
     }
 
     public int getxApple() {

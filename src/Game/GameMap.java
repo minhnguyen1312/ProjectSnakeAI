@@ -186,7 +186,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
             // ask for the Name of player
 
             //format for saving
-            List<String> record = Arrays.asList("Player",score.toString(),gameConfig.gameDifficulty,apple.getSkin(),dtf.format(now));
+            List<String> record = Arrays.asList("Player",score.toString(),gameConfig.gameDifficulty.toString(),apple.getSkin(),dtf.format(now));
             write.append(String.join(",", record));
             write.append("\n");
             write.flush();

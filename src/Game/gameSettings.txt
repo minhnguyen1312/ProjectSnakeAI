@@ -1,5 +1,5 @@
 gameDifficulty
-Mega Ultimate
+Easy
 boardColor
 black
 snakeColor

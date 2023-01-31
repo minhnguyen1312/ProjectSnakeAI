@@ -1,6 +1,6 @@
-anhsBot vs tunaBot : 1 - 0 (Time taken: 26.443)
+anhsBot vs a_zhuchkov : 1 - 0 (Time taken: 13.756)
 
 -------------------------------------------
 
 anhsBot earned: 1
-tunaBot earned: 0
+a_zhuchkov earned: 0

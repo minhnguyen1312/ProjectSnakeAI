@@ -66,18 +66,6 @@ public class SnakesUIMain {
     }
 
 
-    public static void runBot() throws InterruptedException, IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        ArrayList<Class<? extends Bot>> bots = new ArrayList<>();
-        BotLoader loader = new BotLoader();
-
-        String bot01 = "Bot.tuna.tunaBot";
-        String bot02 = "Bot.v_smirnov.V_smirnov";
-        bots.add(loader.getBotClass(bot01));
-        bots.add(loader.getBotClass(bot02));
-
-        start_tournament_n_times(2, bots);
-    }
-
     /**
      * Launch several rounds of snake game between bots
      * @param n Number of rounds
@@ -93,12 +81,12 @@ public class SnakesUIMain {
         }
         for (int i = 0; i < n; i++) {
             System.out.println("\nTournament iteration number " + i + "\n");
-            results_fw = new FileWriter(String.format("%s\\iteration_%d.txt", LOG_DIRECTORY_PATH, i), false);
+//            results_fw = new FileWriter(String.format("%s\\iteration_%d.txt", LOG_DIRECTORY_PATH, i), false);
             start_round_robin_tournament(bots);
-            results_fw.close();
+//            results_fw.close();
         }
 
-        results_fw = new FileWriter(String.format("%s\\total.txt", LOG_DIRECTORY_PATH), false);
+        results_fw = new FileWriter(String.format("%s\\total.txt", LOG_DIRECTORY_PATH), true);
         for (int i = 0; i < bots.size(); i++)
             for (int j = i + 1; j < bots.size(); j++) {
                 if (bots.get(i) == null || bots.get(j) == null) continue;

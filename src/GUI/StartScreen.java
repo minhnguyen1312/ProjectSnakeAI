@@ -6,8 +6,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.text.Collator;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 import javax.swing.*;
+import java.util.LinkedList;
 
 
 public class StartScreen extends JFrame implements ActionListener, Runnable {
@@ -33,7 +37,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
 
     private final ImageIcon StartScreenBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/backgrv3.jpg")));
-    private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv4.png")));
+    private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv5.jpg")));
     private final ImageIcon StatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/gameStatisticsv3.png")));
     private ImageIcon logo;
     private JLabel labelContainer;
@@ -49,9 +53,11 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     private final static Combobox<String> playerBoardColor = new Combobox<>();
     private final static Combobox<String> playerPreyType = new Combobox<>();
 
-
+    // botVsBot
     private final static Combobox<String> bot1NameCombobox = new Combobox<>();
     private final static Combobox<String> bot2NameCombobox = new Combobox<>();
+    private final static Combobox<String> bot1ColorCombobox = new Combobox<>();
+    private final static Combobox<String> bot2ColorCombobox = new Combobox<>();
     private final static JTextField botNumberofTournaments = new JTextField();
 
 
@@ -64,6 +70,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
         frame.setLocation(x, y);
     }
+
+    // ============================== METHODS ===================================== //
 
     public StartScreen() {
         //paintStartScreen();
@@ -82,8 +90,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         gameDifficulty.addItem("Normal");
         gameDifficulty.addItem("Hard");
         gameDifficulty.addItem("Extreme");
-        gameDifficulty.addItem("Mega Ultimate");
-
+        gameDifficulty.addItem("Ultra");
 
         playerColorCombobox.addItem("red");
         playerColorCombobox.addItem("blue");
@@ -102,7 +109,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         playerBoardColor.addItem("violet");
         playerBoardColor.addItem("brown");
         playerBoardColor.addItem("periwinkle");
-
 
         applySettingChanges.setBounds(2 + 425,tileSize*14 + 2, tileSize*3 + 100,tileSize);
         applySettingChanges.setText("Apply Changes");
@@ -126,17 +132,16 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         bot2NameCombobox.addItem("tunaBot");
         bot2NameCombobox.addItem("v_smirnov");
 
-    }
+        bot1ColorCombobox.addItem("sky blue");
+        bot1ColorCombobox.addItem("violet");
+        bot1ColorCombobox.addItem("lime green");
+        bot1ColorCombobox.addItem("");
 
+        bot2ColorCombobox.addItem("white");
+        bot2ColorCombobox.addItem("gray");
+        bot2ColorCombobox.addItem("lavender");
+        bot2ColorCombobox.addItem("yellow");
 
-    public void paintStartScreen() {
-        logo = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/logo.png")));
-        this.setIconImage(logo.getImage());
-
-        labelContainer = new JLabel(StartScreenBackground);
-        labelContainer.setSize(new Dimension(screenWidth, screenHeight));
-
-        // paint all Buttons
         playButton.setBounds(tileSize*5,tileSize*3 + 50, tileSize*7,tileSize);
         playButton.setText("SINGLE PLAYER");
         playButton.setFont(new Font("Comic Sans",Font.BOLD,25));
@@ -146,10 +151,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         playButton.setForeground(Color.white);
         playButton.setBackground(new Color(0,204,102));
         playButton.addActionListener(this);
-
-        //Insets insets = this.getInsets();
-        //Dimension size = playButton.getPreferredSize();
-
 
         settingsButton.setBounds(tileSize*5,tileSize*3 + 140, tileSize*7,tileSize);
         settingsButton.setText("SETTINGS");
@@ -171,7 +172,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         statisticsButton.setBackground(new Color(0,204,102));
         statisticsButton.addActionListener(this);
 
-
         quitgameButton.setBounds(tileSize*5,tileSize*3 + 320, tileSize*7,tileSize);
         quitgameButton.setText("QUIT GAME");
         quitgameButton.setFont(new Font("Comic Sans",Font.BOLD,25));
@@ -181,7 +181,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         quitgameButton.setForeground(Color.white);
         quitgameButton.setBackground(new Color(0,204,102));
         quitgameButton.addActionListener(this);
-
 
         infoButton.setBounds(2 + 5,tileSize*14 - 10, tileSize*3,tileSize);
         infoButton.setText("Credits");
@@ -193,8 +192,15 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         infoButton.setBackground(Color.black);
         infoButton.addActionListener(this);
 
+    }
 
 
+    public void paintStartScreen() {
+        logo = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/logo.png")));
+        this.setIconImage(logo.getImage());
+
+        labelContainer = new JLabel(StartScreenBackground);
+        labelContainer.setSize(new Dimension(screenWidth, screenHeight));
 
         this.setTitle("SnakeAI Revolution");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -203,23 +209,16 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.setLocationRelativeTo(null);
         this.setSize(screenWidth,screenHeight);
         this.setVisible(true);
-
-
-
         this.getContentPane().setBackground(new Color(102,204,0));
+
         this.add(playButton);
         this.add(settingsButton);
         this.add(statisticsButton);
         this.add(quitgameButton);
         this.add(infoButton);
-
-        this.add(labelContainer);      // insert background img at last
-
-        //this.pack();
-        this.setVisible(true);
+        this.add(labelContainer);
 
         centreWindow(this);
-
     }
 
     public void paintStartScreen2() {
@@ -234,9 +233,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.setLocationRelativeTo(null);
         this.setSize(screenWidth,screenHeight);
         this.setVisible(true);
-
-
-
         this.getContentPane().setBackground(new Color(102,204,0));
         this.add(playButton);
         this.add(settingsButton);
@@ -244,11 +240,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(quitgameButton);
         this.add(infoButton);
 
-        this.add(labelContainer);      // insert background img at last
-
-        //this.pack();
-        this.setVisible(true);
-
+        this.add(labelContainer);
         //centreWindow(this);
 
     }
@@ -262,92 +254,54 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.setSize(screenWidth,screenHeight);
         this.setVisible(true);
 
-//        applyChange.setBounds(tileSize*5,tileSize*3, tileSize*7,tileSize*1);
-//        applyChange.setText("CHANGE!!!!");
-//        applyChange.setFont(new Font("Comic Sans",Font.BOLD,25));
-//        applyChange.setFocusable(false);
-//        applyChange.setHorizontalTextPosition(JButton.CENTER);
-//        applyChange.setVerticalTextPosition(JButton.CENTER);
-//        applyChange.setForeground(Color.white);
-//        applyChange.setBackground(new Color(0,204,102));
-//        applyChange.addActionListener(this);
-//
-//
-//        this.add(applyChange);
-//
-//        textSnake1Name.setBounds(50,50,120,30);
-//        this.add(textSnake1Name);
-//        textSnake1Type.setBounds(50,100,120,30);
-//        this.add(textSnake1Type);
-//        textSnake1Color.setBounds(50,150,120,30);
-//        this.add(textSnake1Color);
-//        textSnake2Name.setBounds(50,250,120,30);
-//        this.add(textSnake2Name);
-//        textSnake2Type.setBounds(50,300,120,30);
-//        this.add(textSnake2Type);
-//        textSnake2Color.setBounds(50,350,120,30);
-//        this.add(textSnake2Color);
-
 
         gameDifficulty.setPreferredSize(new Dimension(200, 40));
         this.add(gameDifficulty);
         Insets insets = this.getInsets();
         Dimension size = gameDifficulty.getPreferredSize();
         gameDifficulty.setBounds(245 + insets.left, 142 + insets.top, size.width, size.height);
-        gameDifficulty.addActionListener(this);
 
 
         playerColorCombobox.setPreferredSize(new Dimension(200, 40));
-        //myButton.setBounds(50, 50, 100, 50);
         this.add(playerColorCombobox);
-
         playerColorCombobox.setBounds(245 + insets.left, 255 + insets.top, size.width, size.height);
-        playerColorCombobox.addActionListener(e -> {
-            //System.out.println(playerColorCombobox.getSelectedItem());
-        });
+        playerColorCombobox.addActionListener(this);
 
 
         playerPreyType.setPreferredSize(new Dimension(200, 40));
-        //myButton.setBounds(50, 50, 100, 50);
         this.add(playerPreyType);
-
         playerPreyType.setBounds(586 + insets.left, 255 + insets.top, size.width, size.height);
-        playerPreyType.addActionListener(e -> {
-            //System.out.println(playerPreyType.getSelectedItem());
-        });
 
 
         playerBoardColor.setPreferredSize(new Dimension(200, 40));
-        //myButton.setBounds(50, 50, 100, 50);
-        this.add(playerBoardColor);
 
+        this.add(playerBoardColor);
         playerBoardColor.setBounds(586 + insets.left, 142 + insets.top, size.width, size.height);
-        playerBoardColor.addActionListener(e -> {
-            //System.out.println(playerBoardColor.getSelectedItem());
-        });
+
 
         // botVsbot Settings
         bot1NameCombobox.setPreferredSize(new Dimension(200, 40));
         this.add(bot1NameCombobox);
+        bot1NameCombobox.setBounds(242 + insets.left, 428 + insets.top, size.width, size.height);
 
-        bot1NameCombobox.setBounds(242 + insets.left, 430 + insets.top, size.width, size.height);
-        bot1NameCombobox.addActionListener(e -> {
-            //System.out.println(playerColorCombobox.getSelectedItem());
-        });
 
         bot2NameCombobox.setPreferredSize(new Dimension(200, 40));
         this.add(bot2NameCombobox);
+        bot2NameCombobox.setBounds(541 + insets.left, 428 + insets.top, size.width, size.height);
 
-        bot2NameCombobox.setBounds(541 + insets.left, 430 + insets.top, size.width, size.height);
-        bot2NameCombobox.addActionListener(e -> {
-            //System.out.println(playerColorCombobox.getSelectedItem());
-        });
+        bot1ColorCombobox.setPreferredSize(new Dimension(200, 40));
+        this.add(bot1ColorCombobox);
+        bot1ColorCombobox.setBounds(242 + insets.left, 512 + insets.top, size.width, size.height);
+
+        bot2ColorCombobox.setPreferredSize(new Dimension(200, 40));
+        this.add(bot2ColorCombobox);
+        bot2ColorCombobox.setBounds(541 + insets.left, 512 + insets.top, size.width, size.height);
 
 
-        botNumberofTournaments.setPreferredSize(new Dimension(200, 40));
+
+        botNumberofTournaments.setPreferredSize(new Dimension(150, 40));
         this.add(botNumberofTournaments);
-        botNumberofTournaments.setBounds(593 + insets.left, 553 + insets.top, size.width, size.height);
-
+        botNumberofTournaments.setBounds(593 + insets.left, 577 + insets.top, 150, 40);
 
 
         applySettingChanges.addActionListener(e -> {
@@ -382,28 +336,73 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
         this.add(applySettingChanges);
         this.add(backButton);
-
-        this.add(labelContainer);      // insert background img at last
-
-        //this.pack();
+        this.add(labelContainer);
         this.setVisible(true);
 
         //centreWindow(this);
     }
 
-    public void paintLeaderboardFrame() {
+
+    public int countLineNumberCSV(String filename) throws IOException {
+        try (InputStream is = new BufferedInputStream(new FileInputStream(filename))) {
+            byte[] c = new byte[1024];
+            int count = 0;
+            int readChars = 0;
+            boolean empty = true;
+            while ((readChars = is.read(c)) != -1) {
+                empty = false;
+                for (int i = 0; i < readChars; ++i) {
+                    if (c[i] == '\n') {
+                        ++count;
+                    }
+                }
+            }
+            return (count == 0 && !empty) ? 1 : count;
+        }
+    }
+
+
+    public void paintLeaderboardFrame() throws IOException {
         openLeaderboard();
+        int numberOfRows = 15;
+//        int numberOfRows = countLineNumberCSV("./src/Game/score.csv");
+        System.out.println("The number of lines of the csv score file: " + numberOfRows);
+
+        LinkedList<String> scoreList = new LinkedList<String>();
 
         try {
-            BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/score.csv"));
-            for (int rowCounter = 1 ; rowCounter <= 10 && (row = csvReader.readLine()) != null ; rowCounter++) {
+            BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/highscore.csv"));
+            for (int rowCounter = 1 ; rowCounter <= numberOfRows && (row = csvReader.readLine()) != null ; rowCounter++) {
                 String[] data = row.split(",");
                 drawRow_leaderboard(data, rowCounter);
+                System.out.println(rowCounter + " --- " + data[1]);
+                scoreList.add(data[1]);         // playerName, Score, GameDifficulty, PreyType, Date
             }
+
+
+
+
+            for (String iterator : scoreList) {
+                System.out.println(iterator);
+            }
+
+
             csvReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+//        try {
+//            BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/score.csv"));
+//            for (int rowCounter = 1 ; rowCounter <= 10 && (row = csvReader.readLine()) != null ; rowCounter++) {
+//                String[] data = row.split(",");
+//                drawRow_leaderboard(data, rowCounter);
+//            }
+//            csvReader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void drawRow_leaderboard(String[] data, int rowCount) {
@@ -423,25 +422,15 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.setLayout(null);
         this.setResizable(false);
         this.setSize(screenWidth,screenHeight);
-        //this.setVisible(true);
+        this.setVisible(true);
 
         labelContainer = new JLabel(StatisticsBackground);
         labelContainer.setSize(new Dimension(screenWidth, screenHeight));
 
-        //statisticsTable.setBounds(200, 200, 600, 200);
 
-
-//        this.add(statisticsTable);
         this.add(backButton);
-        this.add(labelContainer);      // insert background img at last
-
-        //this.pack();
-        this.setVisible(true);
-
+        this.add(labelContainer);
     }
-
-
-
 
 
     @Override
@@ -466,7 +455,11 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             this.getContentPane().removeAll();
             this.validate();
             this.repaint();
-            this.paintLeaderboardFrame();
+            try {
+                this.paintLeaderboardFrame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         } else if (e.getSource() == quitgameButton) {
             int respone = JOptionPane.showConfirmDialog(null, "You are about to exit the Game. Are you sure?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
             if (respone == JOptionPane.YES_OPTION) {
