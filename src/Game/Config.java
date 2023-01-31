@@ -171,7 +171,6 @@ public class Config {
         }
 
         this.numberOfTournaments = Integer.parseInt(Files.readAllLines(configPath).get(15));
-        System.out.println(numberOfTournaments);
     }
 
 }

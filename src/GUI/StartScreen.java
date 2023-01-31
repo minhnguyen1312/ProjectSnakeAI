@@ -3,6 +3,7 @@ package GUI;
 import Game.Config;
 import Game.GameFrame;
 import Game.MessageWithLink;
+import Game.ScoreMain;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -75,7 +76,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
     // ============================== METHODS ===================================== //
 
-    public StartScreen() {
+    public StartScreen() throws Exception {
         //paintStartScreen();
 
         backButton.setBounds(2 + 680,tileSize*14 + 2, tileSize*3,tileSize);
@@ -192,6 +193,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         infoButton.setForeground(Color.white);
         infoButton.setBackground(Color.black);
         infoButton.addActionListener(this);
+
+        ScoreMain.execution();
 
     }
 
@@ -343,6 +346,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
     public void paintLeaderboardFrame() throws IOException {
         openLeaderboard();
+
         int numberOfRows = 15;
 //        int numberOfRows = countLineNumberCSV("./src/Game/score.csv");
 

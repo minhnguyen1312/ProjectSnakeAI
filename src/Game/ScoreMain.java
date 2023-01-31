@@ -14,12 +14,12 @@ public class ScoreMain {
     public static boolean append = false;
     public static ArrayList<String> StringList = new ArrayList<String>();
 
-    public static void main(String[] args) throws Exception {
+    public static void execution() throws Exception {
         readAllLinesFromFile(READ_PATH);
-        System.out.println("Unsorted:\n");
-        for(String aSnake: StringList){
-            System.out.println(aSnake +"\n");
-        }
+//        System.out.println("Unsorted:\n");
+//        for(String aSnake: StringList){
+//            System.out.println(aSnake +"\n");
+//        }
 
         ArrayList<SnakeScore> SnakeList = convertListToSnake(StringList);
         writeToHighScore(SnakeList);
@@ -31,7 +31,7 @@ public class ScoreMain {
         results_fw = new FileWriter(WRITE_PATH, append);
 
         for(SnakeScore snake : snakeList){
-            System.out.println(snake.toString());
+//            System.out.println(snake.toString());
             results_fw.write(snake.toString() + "\n");
         }
 

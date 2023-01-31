@@ -47,11 +47,11 @@ public class SnakesUIMain {
 //        }
 
 
-        gameConfig = new Config();
-        gameConfig.loadBotvsBotMode();
         ArrayList<Class<? extends Bot>> bots = new ArrayList<>();
         BotLoader loader = new BotLoader();
 
+        gameConfig = new Config();
+        gameConfig.loadBotvsBotMode();
         bot01 = gameConfig.bot01Name;
         bot02 = gameConfig.bot02Name;
         bots.add(loader.getBotClass(bot01));
