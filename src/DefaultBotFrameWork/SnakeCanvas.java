@@ -7,10 +7,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import Game.Config;
 
 /**
  * This class is responsible for the snakes canvas in GUI
@@ -21,10 +23,11 @@ public class SnakeCanvas extends JPanel {
 	private static final int SMALLER_PAD = 6;
 	private static final int SMALL_PAD = 6;
 	private static final int ApplePad = 10;
-	private static final Color color0 = new Color(92, 192, 255);
-	private static final Color color1 = new Color(255, 255, 255);
-	private static final Color bodyColor0 = new Color(92, 192, 255);
-	private static final Color bodyColor1 = new Color(255, 255, 255);
+	private Config colorConfig;
+	private static Color color0 = new Color(92, 192, 255);
+	private static Color color1 = new Color(255, 255, 255);
+	private static Color bodyColor0 = new Color(92, 192, 255);
+	private static Color bodyColor1 = new Color(255, 255, 255);
 	private static final Color backgroundColor = new Color(0, 0, 0);
 	private static final Color borderColor = new Color(22, 50, 76);
 	private static final Color appleColor = Color.red;
@@ -100,7 +103,7 @@ public class SnakeCanvas extends JPanel {
 	 * 
 	 * @param g game field
 	 */
-	private void render(Graphics2D g) {
+	private void render(Graphics2D g) throws IOException {
 
 		g.setColor(borderColor);
 		g.fillRect(0, 0, renderSize.width, renderSize.height);
@@ -108,13 +111,20 @@ public class SnakeCanvas extends JPanel {
 		g.fillRect(CELL_SIZE, CELL_SIZE, renderSize.width - 2 * CELL_SIZE, renderSize.height - 2 * CELL_SIZE);
 
 		// drawing a grid
-		g.setColor(new Color(255, 255, 255));
-		for (int i = 0; i < (renderSize.height)/CELL_SIZE; ++i) {
-			g.drawLine(i*CELL_SIZE , CELL_SIZE, i*CELL_SIZE, renderSize.height - CELL_SIZE);		// draw all vertical parallel lines
-			g.drawLine(CELL_SIZE, i*CELL_SIZE, renderSize.width - CELL_SIZE,i*CELL_SIZE);
-		}
+//		g.setColor(new Color(255, 255, 255));
+//		for (int i = 0; i < (renderSize.height)/CELL_SIZE; ++i) {
+//			g.drawLine(i*CELL_SIZE , CELL_SIZE, i*CELL_SIZE, renderSize.height - CELL_SIZE);		// draw all vertical parallel lines
+//			g.drawLine(CELL_SIZE, i*CELL_SIZE, renderSize.width - CELL_SIZE,i*CELL_SIZE);
+//		}
 
 		fillCellWithPad(g, game.appleCoordinate, appleColor, ApplePad);
+
+		colorConfig = new Config();
+		colorConfig.loadBotvsBotMode();
+		color0 = colorConfig.bot01Color;
+		bodyColor0 = colorConfig.bot01Color;
+		color1 = colorConfig.bot02Color;
+		bodyColor1 = colorConfig.bot02Color;
 
 		Iterator<Coordinate> it = game.snake0.body.stream().iterator();
 		while (it.hasNext()) {
@@ -141,19 +151,20 @@ public class SnakeCanvas extends JPanel {
 				renderSize.height - 10); // game results
 
 		// Print snakes symbol on score board
-		g.setColor(new Color(92, 192, 255)); // outer
+		g.setColor(colorConfig.bot01Color); // outer
 		g.fillRect(renderSize.width / 2 - 2 * CELL_SIZE + 14, renderSize.height - CELL_SIZE + 11, CELL_SIZE - 18,
 				CELL_SIZE - 18);
-		g.setColor(new Color(92, 192, 255)); // inner
+		g.setColor(colorConfig.bot01Color); // inner
 		g.fillRect(renderSize.width / 2 - 2 * CELL_SIZE + 18, renderSize.height - CELL_SIZE + 15, CELL_SIZE - 26,
 				CELL_SIZE - 26);
-		g.setColor(new Color(255, 255, 255)); // outer
+		g.setColor(colorConfig.bot02Color); // outer
 		fillRect(g, renderSize.width / 2 + 2 * CELL_SIZE - 14, renderSize.height - CELL_SIZE + 11, CELL_SIZE - 18,
 				CELL_SIZE - 18);
-		g.setColor(new Color(255, 255, 255)); // inner
+		g.setColor(colorConfig.bot02Color); // inner
 		fillRect(g, renderSize.width / 2 + 2 * CELL_SIZE - 18, renderSize.height - CELL_SIZE + 15, CELL_SIZE - 26,
 				CELL_SIZE - 26);
 
+		g.setColor(new Color(255, 255, 255));
 		// Print apple symbols on score board
 		apple.paintIcon(this, g, renderSize.width / 2 - 3 * CELL_SIZE, renderSize.height - CELL_SIZE + 3);
 		paintIcon(g, apple, renderSize.width / 2 + 3 * CELL_SIZE, renderSize.height - CELL_SIZE + 3);
@@ -177,7 +188,11 @@ public class SnakeCanvas extends JPanel {
 	public void paint(Graphics g) {
 		Graphics2D gg = (Graphics2D) g; // bufferStrategy.getDrawGraphics();
 		gg.clearRect(0, 0, renderSize.width, renderSize.height);
-		render(gg);
+		try {
+			render(gg);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		// bufferStrategy.show();
 	}

@@ -1,5 +1,6 @@
 package GUI;
 
+import Game.Config;
 import Game.GameFrame;
 
 import java.awt.*;
@@ -77,7 +78,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         //paintStartScreen();
 
         backButton.setBounds(2 + 680,tileSize*14 + 2, tileSize*3,tileSize);
-        backButton.setText("Back");
+        backButton.setText("Back ▶");
         backButton.setFont(new Font("Comic Sans",Font.BOLD,21));
         backButton.setFocusable(false);
         backButton.setHorizontalTextPosition(JButton.CENTER);
@@ -120,26 +121,20 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         applySettingChanges.setBackground(new Color(16, 145, 55));
         applySettingChanges.addActionListener(this);
 
-        bot1NameCombobox.addItem("a_zhuchkov");
-        bot1NameCombobox.addItem("anhsBot");
-        bot1NameCombobox.addItem("SampleBot");
-        bot1NameCombobox.addItem("tunaBot");
-        bot1NameCombobox.addItem("v_smirnov");
+        for (int i = 0; i < Config.botNameArr.length; ++i) {
+            bot1NameCombobox.addItem(Config.botNameArr[i]);
+            bot2NameCombobox.addItem(Config.botNameArr[i]);
+        }
 
-        bot2NameCombobox.addItem("a_zhuchkov");
-        bot2NameCombobox.addItem("anhsBot");
-        bot2NameCombobox.addItem("SampleBot");
-        bot2NameCombobox.addItem("tunaBot");
-        bot2NameCombobox.addItem("v_smirnov");
 
         bot1ColorCombobox.addItem("sky blue");
         bot1ColorCombobox.addItem("violet");
         bot1ColorCombobox.addItem("lime green");
-        bot1ColorCombobox.addItem("");
+        bot1ColorCombobox.addItem("purple");
 
         bot2ColorCombobox.addItem("white");
         bot2ColorCombobox.addItem("gray");
-        bot2ColorCombobox.addItem("lavender");
+        bot2ColorCombobox.addItem("orange");
         bot2ColorCombobox.addItem("yellow");
 
         playButton.setBounds(tileSize*5,tileSize*3 + 50, tileSize*7,tileSize);
@@ -317,8 +312,10 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
                 myWriter.write( playerPreyType.getSelectedItem() + "\n");
                 myWriter.write("bot01\n");
                 myWriter.write( bot1NameCombobox.getSelectedItem() + "\n");
+                myWriter.write( bot1ColorCombobox.getSelectedItem() + "\n");
                 myWriter.write("bot02\n");
                 myWriter.write( bot2NameCombobox.getSelectedItem() + "\n");
+                myWriter.write( bot2ColorCombobox.getSelectedItem() + "\n");
                 myWriter.write("numberOfTournaments\n");
                 myWriter.write( botNumberofTournaments.getText().isEmpty() ? "5" : botNumberofTournaments.getText());
                 myWriter.close();
@@ -366,43 +363,18 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         openLeaderboard();
         int numberOfRows = 15;
 //        int numberOfRows = countLineNumberCSV("./src/Game/score.csv");
-        System.out.println("The number of lines of the csv score file: " + numberOfRows);
-
-        LinkedList<String> scoreList = new LinkedList<String>();
 
         try {
             BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/highscore.csv"));
             for (int rowCounter = 1 ; rowCounter <= numberOfRows && (row = csvReader.readLine()) != null ; rowCounter++) {
                 String[] data = row.split(",");
                 drawRow_leaderboard(data, rowCounter);
-                System.out.println(rowCounter + " --- " + data[1]);
-                scoreList.add(data[1]);         // playerName, Score, GameDifficulty, PreyType, Date
             }
-
-
-
-
-            for (String iterator : scoreList) {
-                System.out.println(iterator);
-            }
-
-
             csvReader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-//        try {
-//            BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/score.csv"));
-//            for (int rowCounter = 1 ; rowCounter <= 10 && (row = csvReader.readLine()) != null ; rowCounter++) {
-//                String[] data = row.split(",");
-//                drawRow_leaderboard(data, rowCounter);
-//            }
-//            csvReader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     private void drawRow_leaderboard(String[] data, int rowCount) {

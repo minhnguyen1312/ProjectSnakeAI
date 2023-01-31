@@ -2,6 +2,7 @@ package DefaultBotFrameWork;
 
 import DefaultBotFrameWork.*;
 import GUI.StartScreen;
+import Game.Config;
 
 import javax.swing.*;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.Scanner;
 public class SnakesUIMain {
 
     private static final String LOG_DIRECTORY_PATH = "logs";
+    private static Config gameConfig;
     private static FileWriter results_fw;
     private static int[][] total_results_table;
 
@@ -45,23 +47,19 @@ public class SnakesUIMain {
 //        }
 
 
-        //SnakesUIMain newGame = new SnakesUIMain();
+        gameConfig = new Config();
+        gameConfig.loadBotvsBotMode();
         ArrayList<Class<? extends Bot>> bots = new ArrayList<>();
         BotLoader loader = new BotLoader();
 
-        Path path = Paths.get("./src/Game/gameSettings.txt");
-        String bot01Input = "Bot." + Files.readAllLines(path).get(10 - 1);
-        String bot02Input = "Bot." + Files.readAllLines(path).get(12 - 1);
-
-        Scanner in = new Scanner(System.in);
-        bot01 = bot01Input;
-        bot02 = bot02Input;
+        bot01 = gameConfig.bot01Name;
+        bot02 = gameConfig.bot02Name;
         bots.add(loader.getBotClass(bot01));
         bots.add(loader.getBotClass(bot02));
 
-        int numberOfTournaments = Integer.parseInt(Files.readAllLines(path).get(14 - 1));
+        //int numberOfTournaments = Integer.parseInt(Files.readAllLines(path).get(15));
 
-        start_tournament_n_times(numberOfTournaments, bots);
+        start_tournament_n_times(gameConfig.numberOfTournaments, bots);
 
     }
 
@@ -81,9 +79,9 @@ public class SnakesUIMain {
         }
         for (int i = 0; i < n; i++) {
             System.out.println("\nTournament iteration number " + i + "\n");
-//            results_fw = new FileWriter(String.format("%s\\iteration_%d.txt", LOG_DIRECTORY_PATH, i), false);
+            results_fw = new FileWriter(String.format("%s\\iteration_%d.txt", LOG_DIRECTORY_PATH, i), false);
             start_round_robin_tournament(bots);
-//            results_fw.close();
+            results_fw.close();
         }
 
         results_fw = new FileWriter(String.format("%s\\total.txt", LOG_DIRECTORY_PATH), true);

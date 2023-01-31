@@ -8,7 +8,9 @@ preyType
 apple
 bot01
 a_zhuchkov
+sky blue
 bot02
 a_zhuchkov
+white
 numberOfTournaments
 5
