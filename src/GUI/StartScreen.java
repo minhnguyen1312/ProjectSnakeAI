@@ -2,6 +2,7 @@ package GUI;
 
 import Game.Config;
 import Game.GameFrame;
+import Game.MessageWithLink;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -78,7 +79,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         //paintStartScreen();
 
         backButton.setBounds(2 + 680,tileSize*14 + 2, tileSize*3,tileSize);
-        backButton.setText("Back ▶");
+        backButton.setText("◀ Back");
         backButton.setFont(new Font("Comic Sans",Font.BOLD,21));
         backButton.setFocusable(false);
         backButton.setHorizontalTextPosition(JButton.CENTER);
@@ -138,41 +139,46 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         bot2ColorCombobox.addItem("yellow");
 
         playButton.setBounds(tileSize*5,tileSize*3 + 50, tileSize*7,tileSize);
-        playButton.setText("SINGLE PLAYER");
+        playButton.setText("▷       SINGLE PLAYER");
         playButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         playButton.setFocusable(false);
-        playButton.setHorizontalTextPosition(JButton.CENTER);
-        playButton.setVerticalTextPosition(JButton.CENTER);
+//        playButton.setHorizontalTextPosition(JButton.CENTER);
+//        playButton.setVerticalTextPosition(JButton.CENTER);
+        playButton.setHorizontalAlignment(SwingConstants.LEFT);
         playButton.setForeground(Color.white);
         playButton.setBackground(new Color(0,204,102));
         playButton.addActionListener(this);
 
         settingsButton.setBounds(tileSize*5,tileSize*3 + 140, tileSize*7,tileSize);
-        settingsButton.setText("SETTINGS");
+        settingsButton.setText("⬡       SETTINGS");
         settingsButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         settingsButton.setFocusable(false);
-        settingsButton.setHorizontalTextPosition(JButton.CENTER);
-        settingsButton.setVerticalTextPosition(JButton.CENTER);
+//        settingsButton.setHorizontalTextPosition(JButton.CENTER);
+//        settingsButton.setVerticalTextPosition(JButton.CENTER);
+        settingsButton.setHorizontalAlignment(SwingConstants.LEFT);
         settingsButton.setForeground(Color.white);
         settingsButton.setBackground(new Color(0,204,102));
         settingsButton.addActionListener(this);
 
         statisticsButton.setBounds(tileSize*5,tileSize*3 + 230, tileSize*7,tileSize);
-        statisticsButton.setText("STATISTICS");
+        statisticsButton.setText("≡        STATISTICS");
         statisticsButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         statisticsButton.setFocusable(false);
-        statisticsButton.setHorizontalTextPosition(JButton.CENTER);
-        statisticsButton.setVerticalTextPosition(JButton.CENTER);
+//        statisticsButton.setHorizontalTextPosition(JButton.CENTER);
+//        statisticsButton.setVerticalTextPosition(JButton.CENTER);
+        statisticsButton.setHorizontalAlignment(SwingConstants.LEFT);
         statisticsButton.setForeground(Color.white);
         statisticsButton.setBackground(new Color(0,204,102));
         statisticsButton.addActionListener(this);
 
         quitgameButton.setBounds(tileSize*5,tileSize*3 + 320, tileSize*7,tileSize);
-        quitgameButton.setText("QUIT GAME");
+        quitgameButton.setText("⤬       QUIT GAME");
         quitgameButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         quitgameButton.setFocusable(false);
-        quitgameButton.setHorizontalTextPosition(JButton.CENTER);
-        quitgameButton.setVerticalTextPosition(JButton.CENTER);
+//        quitgameButton.setHorizontalTextPosition(JButton.CENTER);
+//        quitgameButton.setVerticalTextPosition(JButton.CENTER);
+
+        quitgameButton.setHorizontalAlignment(SwingConstants.LEFT);
         quitgameButton.setForeground(Color.white);
         quitgameButton.setBackground(new Color(0,204,102));
         quitgameButton.addActionListener(this);
@@ -300,31 +306,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
 
         applySettingChanges.addActionListener(e -> {
-            try {
-                FileWriter myWriter = new FileWriter("./src/Game/gameSettings.txt");
-                myWriter.write("gameDifficulty\n");
-                myWriter.write(gameDifficulty.getSelectedItem() + "\n");
-                myWriter.write("boardColor\n");
-                myWriter.write(playerBoardColor.getSelectedItem() + "\n");
-                myWriter.write("snakeColor\n");
-                myWriter.write(playerColorCombobox.getSelectedItem() + "\n");
-                myWriter.write("preyType\n");
-                myWriter.write( playerPreyType.getSelectedItem() + "\n");
-                myWriter.write("bot01\n");
-                myWriter.write( bot1NameCombobox.getSelectedItem() + "\n");
-                myWriter.write( bot1ColorCombobox.getSelectedItem() + "\n");
-                myWriter.write("bot02\n");
-                myWriter.write( bot2NameCombobox.getSelectedItem() + "\n");
-                myWriter.write( bot2ColorCombobox.getSelectedItem() + "\n");
-                myWriter.write("numberOfTournaments\n");
-                myWriter.write( botNumberofTournaments.getText().isEmpty() ? "5" : botNumberofTournaments.getText());
-                myWriter.close();
-                System.out.println("Successfully Change.");
-                //JOptionPane.showMessageDialog(null, "New Changes are applied!", "Game Settings", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException fileEx) {
-                System.out.println("An error occurred.");
-                fileEx.printStackTrace();
-            }
+
         });
 
 
@@ -423,6 +405,34 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             this.validate();
             this.repaint();
             this.paintSettingsFrame();
+            
+        } else if (e.getSource() == applySettingChanges) {
+            try {
+                FileWriter myWriter = new FileWriter("./src/Game/gameSettings.txt");
+                myWriter.write("gameDifficulty\n");
+                myWriter.write(gameDifficulty.getSelectedItem() + "\n");
+                myWriter.write("boardColor\n");
+                myWriter.write(playerBoardColor.getSelectedItem() + "\n");
+                myWriter.write("snakeColor\n");
+                myWriter.write(playerColorCombobox.getSelectedItem() + "\n");
+                myWriter.write("preyType\n");
+                myWriter.write( playerPreyType.getSelectedItem() + "\n");
+                myWriter.write("bot01\n");
+                myWriter.write( bot1NameCombobox.getSelectedItem() + "\n");
+                myWriter.write( bot1ColorCombobox.getSelectedItem() + "\n");
+                myWriter.write("bot02\n");
+                myWriter.write( bot2NameCombobox.getSelectedItem() + "\n");
+                myWriter.write( bot2ColorCombobox.getSelectedItem() + "\n");
+                myWriter.write("numberOfTournaments\n");
+                myWriter.write( botNumberofTournaments.getText().isEmpty() ? "5" : botNumberofTournaments.getText());
+                myWriter.close();
+                System.out.println("Successfully Change.");
+                JOptionPane.showMessageDialog(null, "Successfully Updated Settings!", "Game Settings", JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "New Changes are applied!", "Game Settings", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException fileEx) {
+                System.out.println("An error occurred.");
+                fileEx.printStackTrace();
+            }
         } else if (e.getSource() == statisticsButton) {
             this.getContentPane().removeAll();
             this.validate();
@@ -440,7 +450,16 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             }
 
         } else if (e.getSource() == infoButton) {
-            JOptionPane.showMessageDialog(null, "Snake Revolution\nversion 1.0.0\n\nAuthors:\nNguyen Phuoc Bao Minh\nNguyen Vu Doanh Khoa\nVu Hoang Tuan Anh\nBa Nguyen Quoc Anh", "About us", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, new MessageWithLink("Snake Revolution" +
+                    "<br>version 1.0.0<br><br>" +
+                    "Authors:<br>" +
+                    "Nguyen Phuoc Bao Minh<br>" +
+                    "Nguyen Vu Doanh Khoa<br>" +
+                    "Vu Hoang Tuan Anh<br>" +
+                    "Ba Nguyen Quoc Anh<br><br>" +
+                    "Project Link on Github: " +
+                    "<a href=\"https://github.com/minhnguyen1312/ProjectSnakeAI\">Here</a>"));
+            //JOptionPane.showMessageDialog(null, "Snake Revolution\nversion 1.0.0\n\nAuthors:\nNguyen Phuoc Bao Minh\nNguyen Vu Doanh Khoa\nVu Hoang Tuan Anh\nBa Nguyen Quoc Anh", "About us", JOptionPane.INFORMATION_MESSAGE);
         }
         else if (e.getSource() == backButton) {
             this.getContentPane().removeAll();
