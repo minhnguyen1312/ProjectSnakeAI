@@ -184,11 +184,7 @@ public class SnakesUIMain {
             results_fw.write(bots_names.get(playerNumber.get(i)) + " earned: " + points.get(playerNumber.get(i)).toString() + "\n");
         }
     }
-
-
-
-
-    // start screen class
+    
 
 }
 
