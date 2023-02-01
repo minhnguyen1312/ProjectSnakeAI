@@ -7,10 +7,10 @@ red
 preyType
 apple
 bot01
-a_zhuchkov
+v_smirnov
 lime green
 bot02
-a_zhuchkov
+anhsBot
 orange
 numberOfTournaments
-2
+5

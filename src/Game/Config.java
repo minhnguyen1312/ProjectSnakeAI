@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 public class Config {
 
     public static boolean running = false;
-
     public static final int WIDTH = 750, HEIGHT = 750;
     public static final int SQUARE_SIZE = 30;
     public static final int boundSquare = 2;
@@ -25,20 +24,16 @@ public class Config {
     public static File CHERRY_SKIN = new File("./src/Game/skin/cherry.png");
     public static File BANANA_SKIN = new File("./src/Game/skin/banana.png");
     public static File MOUSE_SKIN = new File("./src/Game/skin/mouse.png");
-
     public File SKIN;
-
 
     // <--- TIME BETWEEN "ACTION"  ---> // --> defines game Difficulties
     public static final int DELAY_DEFAULT = 75;
     public static final int appleTimer_DEFAULT = 50; //moves
-
     public int DELAY;
     public int appleTimer;
 
     // GAME MODE
     public GameDifficulty gameDifficulty;
-
 
     // Snake Config
     public Color snakeColor;
@@ -46,27 +41,12 @@ public class Config {
     // GameBoard Config
     public Color boardColor;
 
-
     // botVsbot
     public String bot01Name;
     public String bot02Name;
     public Color bot01Color;
     public Color bot02Color;
     public int numberOfTournaments;
-    public enum BotName {
-        a_zhuchkov(0),
-        anhsBot(1),
-        SampleBot(2),
-        tunaBot(3),
-        v_smirnov(4);
-
-        int botNameIndex = 0;
-
-        BotName(int index) {
-            this.botNameIndex = index;
-        }
-    }
-
     public static String[] botNameArr = {"a_zhuchkov", "anhsBot", "SampleBot", "tunaBot", "v_smirnov"};
 
     // ============================= METHODS ======================================

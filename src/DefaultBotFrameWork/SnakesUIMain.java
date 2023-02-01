@@ -5,6 +5,9 @@ import GUI.StartScreen;
 import Game.Config;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -45,8 +48,6 @@ public class SnakesUIMain {
 //            System.err.println("You must provide two classes implementing the Bot interface.");
 //            System.exit(1);
 //        }
-
-
         ArrayList<Class<? extends Bot>> bots = new ArrayList<>();
         BotLoader loader = new BotLoader();
 
@@ -88,8 +89,8 @@ public class SnakesUIMain {
         for (int i = 0; i < bots.size(); i++)
             for (int j = i + 1; j < bots.size(); j++) {
                 if (bots.get(i) == null || bots.get(j) == null) continue;
-                System.out.println("\n" + bots.get(i).getSimpleName() + " vs. " + bots.get(j).getSimpleName() + ": " + total_results_table[i][j] + " - " + total_results_table[j][i]);
-                results_fw.write(bots.get(i).getSimpleName() + " vs. " + bots.get(j).getSimpleName() + ": " + total_results_table[i][j] + " - " + total_results_table[j][i] + "\n");
+                System.out.println("\n" + bots.get(i).getSimpleName() + " vs. " + bots.get(j).getSimpleName() + " : " + total_results_table[i][j] + " - " + total_results_table[j][i]);
+                results_fw.write(bots.get(i).getSimpleName() + " vs. " + bots.get(j).getSimpleName() + " : " + total_results_table[i][j] + " - " + total_results_table[j][i] + "\n");
             }
         results_fw.close();
     }
@@ -184,7 +185,7 @@ public class SnakesUIMain {
             results_fw.write(bots_names.get(playerNumber.get(i)) + " earned: " + points.get(playerNumber.get(i)).toString() + "\n");
         }
     }
-    
+
 
 }
 

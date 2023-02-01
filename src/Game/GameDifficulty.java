@@ -9,9 +9,7 @@ public enum GameDifficulty {
 
         int difficultyOrdinal;
 
-
         GameDifficulty (int order) {
                 this.difficultyOrdinal = order;
         }
-
 }

@@ -1,6 +1,11 @@
-anhsBot vs. a_zhuchkov: 1 - 1
-anhsBot vs. a_zhuchkov: 2 - 0
-a_zhuchkov vs. a_zhuchkov: 0 - 1
-a_zhuchkov vs. a_zhuchkov: 0 - 0
-a_zhuchkov vs. a_zhuchkov: 0 - 0
-a_zhuchkov vs. a_zhuchkov: 0 - 2
+anhsBot vs. a_zhuchkov : 1 - 1
+anhsBot vs. a_zhuchkov : 2 - 0
+a_zhuchkov vs. a_zhuchkov : 0 - 1
+a_zhuchkov vs. a_zhuchkov : 0 - 0
+a_zhuchkov vs. a_zhuchkov : 0 - 0
+a_zhuchkov vs. a_zhuchkov : 0 - 2
+anhsBot vs. anhsBot : 0 - 2
+anhsBot vs. anhsBot : 2 - 0
+anhsBot vs. anhsBot : 0 - 2
+anhsBot vs. anhsBot : 1 - 1
+v_smirnov vs. anhsBot : 2 - 3
