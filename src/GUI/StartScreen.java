@@ -9,28 +9,28 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.text.Collator;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Objects;
 import javax.swing.*;
-import java.util.LinkedList;
 
 
 public class StartScreen extends JFrame implements ActionListener, Runnable {
-
     @Serial
     private static final long serialVersionUID = 1L;
-    //SCREEN SETTINGS
-    final int originalTile = 16; //16*16
-    final int scale = 3;
 
+    //Main Screen general components
+    final int originalTile = 16;
+    final int scale = 3;
     final int tileSize = originalTile * scale;
     final int maxScreenCol = 18;
     final int maxScreenRow = 16;
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
-
+    private final ImageIcon StartScreenBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/backgrv3.jpg")));
+    private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv5.jpg")));
+    private final ImageIcon SinglePlayerStatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/SinglePlayerStatisticsv4.png")));
+    private final ImageIcon BotVsBotStatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/botStatistics.png")));
+    private ImageIcon logo;
+    private JLabel labelContainer;
     JButton playButton = new JButton();
     JButton settingsButton = new JButton();
     JButton statisticsButton = new JButton();
@@ -38,25 +38,15 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     JButton infoButton = new JButton();
     JButton backButton = new JButton();
 
-
-    private final ImageIcon StartScreenBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/backgrv3.jpg")));
-    private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv5.jpg")));
-    private final ImageIcon StatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/gameStatisticsv3.png")));
-    private ImageIcon logo;
-    private JLabel labelContainer;
-
     // Settings GUI.Frame
     JButton applySettingChanges = new JButton();
-
     JTable statisticsTable = new JTable();
-
-    // single player
+    //----> single player
     private final static Combobox<String> gameDifficulty = new Combobox<>();
     private final static Combobox<String> playerColorCombobox = new Combobox<>();
     private final static Combobox<String> playerBoardColor = new Combobox<>();
     private final static Combobox<String> playerPreyType = new Combobox<>();
-
-    // botVsBot
+    //----> botVsBot
     private final static Combobox<String> bot1NameCombobox = new Combobox<>();
     private final static Combobox<String> bot2NameCombobox = new Combobox<>();
     private final static Combobox<String> bot1ColorCombobox = new Combobox<>();
@@ -64,9 +54,19 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     private final static JTextField botNumberofTournaments = new JTextField();
 
 
-    // Leaderboard
-    String row = "";
+    // Statistics
+    public static String row = "";
+    public static String[] statisticsBoard = {"BotvsBot Statistics ▶", "◀ SinglePlayer Statistics"};
+    public static String nextStatistics = statisticsBoard[0];
+    public static JButton changeStatisticsBoardButton = new JButton();
 
+
+    // ============================== METHODS ===================================== //
+
+    /**
+     * centre the frame on the window screen
+     * @param frame
+     */
     public static void centreWindow(Window frame) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
@@ -74,11 +74,12 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         frame.setLocation(x, y);
     }
 
-    // ============================== METHODS ===================================== //
 
+    /**
+     * initialize all the buttons and components when create an instance of StartScreen
+     * @throws Exception
+     */
     public StartScreen() throws Exception {
-        //paintStartScreen();
-
         backButton.setBounds(2 + 680,tileSize*14 + 2, tileSize*3,tileSize);
         backButton.setText("◀ Back");
         backButton.setFont(new Font("Comic Sans",Font.BOLD,21));
@@ -88,6 +89,16 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         backButton.setForeground(Color.white);
         backButton.setBackground(Color.black);
         backButton.addActionListener(this);
+
+        changeStatisticsBoardButton.setBounds(380,tileSize*14 + 2, tileSize*3 + 150,tileSize);
+        changeStatisticsBoardButton.setText(nextStatistics);
+        changeStatisticsBoardButton.setFont(new Font("Comic Sans",Font.BOLD,21));
+        changeStatisticsBoardButton.setFocusable(false);
+        changeStatisticsBoardButton.setHorizontalTextPosition(JButton.CENTER);
+        changeStatisticsBoardButton.setVerticalTextPosition(JButton.CENTER);
+        changeStatisticsBoardButton.setForeground(Color.white);
+        changeStatisticsBoardButton.setBackground(new Color(16, 145, 55));
+        changeStatisticsBoardButton.addActionListener(this);
 
         gameDifficulty.addItem("Easy");
         gameDifficulty.addItem("Normal");
@@ -128,7 +139,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             bot2NameCombobox.addItem(Config.botNameArr[i]);
         }
 
-
         bot1ColorCombobox.addItem("sky blue");
         bot1ColorCombobox.addItem("violet");
         bot1ColorCombobox.addItem("lime green");
@@ -143,8 +153,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         playButton.setText("▷       SINGLE PLAYER");
         playButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         playButton.setFocusable(false);
-//        playButton.setHorizontalTextPosition(JButton.CENTER);
-//        playButton.setVerticalTextPosition(JButton.CENTER);
         playButton.setHorizontalAlignment(SwingConstants.LEFT);
         playButton.setForeground(Color.white);
         playButton.setBackground(new Color(0,204,102));
@@ -154,8 +162,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         settingsButton.setText("⬡       SETTINGS");
         settingsButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         settingsButton.setFocusable(false);
-//        settingsButton.setHorizontalTextPosition(JButton.CENTER);
-//        settingsButton.setVerticalTextPosition(JButton.CENTER);
         settingsButton.setHorizontalAlignment(SwingConstants.LEFT);
         settingsButton.setForeground(Color.white);
         settingsButton.setBackground(new Color(0,204,102));
@@ -165,8 +171,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         statisticsButton.setText("≡        STATISTICS");
         statisticsButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         statisticsButton.setFocusable(false);
-//        statisticsButton.setHorizontalTextPosition(JButton.CENTER);
-//        statisticsButton.setVerticalTextPosition(JButton.CENTER);
         statisticsButton.setHorizontalAlignment(SwingConstants.LEFT);
         statisticsButton.setForeground(Color.white);
         statisticsButton.setBackground(new Color(0,204,102));
@@ -176,9 +180,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         quitgameButton.setText("⤬       QUIT GAME");
         quitgameButton.setFont(new Font("Comic Sans",Font.BOLD,25));
         quitgameButton.setFocusable(false);
-//        quitgameButton.setHorizontalTextPosition(JButton.CENTER);
-//        quitgameButton.setVerticalTextPosition(JButton.CENTER);
-
         quitgameButton.setHorizontalAlignment(SwingConstants.LEFT);
         quitgameButton.setForeground(Color.white);
         quitgameButton.setBackground(new Color(0,204,102));
@@ -195,7 +196,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         infoButton.addActionListener(this);
 
         ScoreMain.execution();
-
     }
 
 
@@ -265,20 +265,16 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         Dimension size = gameDifficulty.getPreferredSize();
         gameDifficulty.setBounds(245 + insets.left, 142 + insets.top, size.width, size.height);
 
-
         playerColorCombobox.setPreferredSize(new Dimension(200, 40));
         this.add(playerColorCombobox);
         playerColorCombobox.setBounds(245 + insets.left, 255 + insets.top, size.width, size.height);
         playerColorCombobox.addActionListener(this);
 
-
         playerPreyType.setPreferredSize(new Dimension(200, 40));
         this.add(playerPreyType);
         playerPreyType.setBounds(586 + insets.left, 255 + insets.top, size.width, size.height);
 
-
         playerBoardColor.setPreferredSize(new Dimension(200, 40));
-
         this.add(playerBoardColor);
         playerBoardColor.setBounds(586 + insets.left, 142 + insets.top, size.width, size.height);
 
@@ -287,7 +283,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         bot1NameCombobox.setPreferredSize(new Dimension(200, 40));
         this.add(bot1NameCombobox);
         bot1NameCombobox.setBounds(242 + insets.left, 428 + insets.top, size.width, size.height);
-
 
         bot2NameCombobox.setPreferredSize(new Dimension(200, 40));
         this.add(bot2NameCombobox);
@@ -343,18 +338,26 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         }
     }
 
+    public void paintSinglePlayerStatisticsFrame() throws IOException {
+        this.setTitle("SnakeAI Revolution/Single Player Statistics");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(null);
+        this.setResizable(false);
+        this.setSize(screenWidth,screenHeight);
+        this.setVisible(true);
+        labelContainer = new JLabel(SinglePlayerStatisticsBackground);
+        labelContainer.setSize(new Dimension(screenWidth, screenHeight));
+        this.add(changeStatisticsBoardButton);
+        this.add(backButton);
+        this.add(labelContainer);
 
-    public void paintLeaderboardFrame() throws IOException {
-        openLeaderboard();
-
-        int numberOfRows = 15;
+        int numberOfRows = 14;
 //        int numberOfRows = countLineNumberCSV("./src/Game/score.csv");
-
         try {
             BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/highscore.csv"));
             for (int rowCounter = 1 ; rowCounter <= numberOfRows && (row = csvReader.readLine()) != null ; rowCounter++) {
                 String[] data = row.split(",");
-                drawRow_leaderboard(data, rowCounter);
+                drawRow_Statistics(data, rowCounter);
             }
             csvReader.close();
         } catch (IOException e) {
@@ -363,7 +366,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
     }
 
-    private void drawRow_leaderboard(String[] data, int rowCount) {
+    private void drawRow_Statistics(String[] data, int rowCount) {
         for (int i = 0 ; i < data.length  ; i++) {
             JLabel l = new JLabel(data[i]);
             l.setFont(new Font("Arial", Font.BOLD, 20));
@@ -374,23 +377,58 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         }
     }
 
-    private void openLeaderboard() {
-        this.setTitle("SnakeAI Revolution/Leaderboard");
+
+    private void paintBotVsBotStatisticsFrame() {
+        this.setTitle("SnakeAI Revolution/Bot vs Bot Statistics");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setResizable(false);
         this.setSize(screenWidth,screenHeight);
         this.setVisible(true);
-
-        labelContainer = new JLabel(StatisticsBackground);
+        labelContainer = new JLabel(BotVsBotStatisticsBackground);
         labelContainer.setSize(new Dimension(screenWidth, screenHeight));
-
-
+        this.add(changeStatisticsBoardButton);
         this.add(backButton);
         this.add(labelContainer);
+
+        int numberOfRows = 5;
+//        int numberOfRows = countLineNumberCSV("./src/Game/score.csv");
+        try {
+            boolean firstLine = true;
+            BufferedReader csvReader = new BufferedReader(new FileReader("./logs/multiscoreboard.csv"));
+            for (int rowCounter = 0 ; rowCounter <= numberOfRows && (row = csvReader.readLine()) != null ; rowCounter++) {
+                if (firstLine) {
+                    firstLine = false;
+                    continue;
+                } else {
+                    String[] data = row.split(",");
+                    //System.out.println(data[1]);
+                    drawRow_BotStatistics(data, rowCounter);
+                }
+
+            }
+            csvReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawRow_BotStatistics(String[] data, int rowCount) {
+        for (int i = 0 ; i < data.length  ; i++) {
+            JLabel l = new JLabel(data[i]);
+            l.setFont(new Font("Arial", Font.BOLD, 20));
+            l.setForeground(Color.WHITE);
+            l.setBounds(80*(i+1) + 100, 30*rowCount + 150, 600,100);
+            labelContainer.add(l);
+            this.add(labelContainer);
+        }
     }
 
 
+    /**
+     * create events for every button of the screen
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == playButton) {
@@ -402,9 +440,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
                 throw new RuntimeException(ex);
             }
 
-
         } else if (e.getSource() == settingsButton) {
-            //GUI.SettingsFrame myWindow = new GUI.SettingsFrame();
             this.getContentPane().removeAll();
             this.validate();
             this.repaint();
@@ -437,15 +473,21 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
                 System.out.println("An error occurred.");
                 fileEx.printStackTrace();
             }
+
         } else if (e.getSource() == statisticsButton) {
             this.getContentPane().removeAll();
             this.validate();
             this.repaint();
-            try {
-                this.paintLeaderboardFrame();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            if (nextStatistics.equals(statisticsBoard[0])) {
+                try {
+                    this.paintSinglePlayerStatisticsFrame();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            } else {
+                this.paintBotVsBotStatisticsFrame();
             }
+
         } else if (e.getSource() == quitgameButton) {
             int respone = JOptionPane.showConfirmDialog(null, "You are about to exit the Game. Are you sure?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
             if (respone == JOptionPane.YES_OPTION) {
@@ -470,6 +512,27 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             this.validate();
             this.repaint();
             this.paintStartScreen2();
+
+        } else if (e.getSource() == changeStatisticsBoardButton) {
+            if (nextStatistics.equals(statisticsBoard[0])) {
+                this.getContentPane().removeAll();
+                this.validate();
+                this.repaint();
+                this.paintBotVsBotStatisticsFrame();
+                nextStatistics = statisticsBoard[1];
+                changeStatisticsBoardButton.setText(nextStatistics);
+            } else {
+                this.getContentPane().removeAll();
+                this.validate();
+                this.repaint();
+                try {
+                    this.paintSinglePlayerStatisticsFrame();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                nextStatistics = statisticsBoard[0];
+                changeStatisticsBoardButton.setText(nextStatistics);
+            }
         }
 
     }

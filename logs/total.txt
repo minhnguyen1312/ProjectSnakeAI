@@ -9,3 +9,4 @@ anhsBot vs. anhsBot : 2 - 0
 anhsBot vs. anhsBot : 0 - 2
 anhsBot vs. anhsBot : 1 - 1
 v_smirnov vs. anhsBot : 2 - 3
+v_smirnov vs. anhsBot : 1 - 4

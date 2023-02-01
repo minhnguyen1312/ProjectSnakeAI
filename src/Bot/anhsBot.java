@@ -8,10 +8,8 @@ import DefaultBotFrameWork.Snake;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.Random;
 
 public class anhsBot implements Bot {
-    private final Random rnd = new Random();
     private static final Direction[] DIRECTIONS = new Direction[] {Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
 
     @Override
@@ -36,127 +34,154 @@ public class anhsBot implements Bot {
 
         // avoid losing moves...
         Direction[] notLosing = Arrays.stream(validMoves)
-                .filter(d -> head.moveTo(d).inBounds(mazeSize))             // do not touch the borders
-                .filter(d -> !opponent.elements.contains(head.moveTo(d)))   // do not touch other player
-                .filter(d -> !snake.elements.contains(head.moveTo(d)))      // do not touch our own body
+                .filter(d -> head.moveTo(d).inBounds(mazeSize))             	// Snake do not want to touch the borders
+                .filter(d -> !opponent.elements.contains(head.moveTo(d)))   	// Snake do not want to touch the opponent's body
+                .filter(d -> !snake.elements.contains(head.moveTo(d)))      	// Snake do not want to touch its own body
                 .sorted()
                 .toArray(Direction[]::new);
 
         if (notLosing.length > 0) {
-        	// get distance from our head to apple
-        	int headToApple = Distance(head, apple);
-        	// decide which mode we'll in
-        	if (headToApple > 9) {															// we are too far away from apple
-        		if (snake.body.size() <= opponent.body.size()) {							// we are shorter than opponent --> engage safe mode
-        			// find the apple's region
-        			int appleRegion = 0;
-        			Coordinate mid = new Coordinate(mazeSize.x/2, mazeSize.y/2);
-        			if (apple.x < mid.x && apple.y < mid.y) {
-        				appleRegion = 1;
-        			} else if (apple.x >= mid.x && apple.y >= mid.y) {
-        				appleRegion = 4;
-        			} else if (apple.x < mid.x && apple.y >= mid.y) {
-        				appleRegion = 3;
-        			} else if (apple.x >= mid.x && apple.y < mid.y) {
-        				appleRegion = 2;
-        			}
-        			// find our snake's region
-        			int snakeRegion = 0;
-        			if (head.x < mid.x && head.y < mid.y) {
-        				snakeRegion = 1;
-        			} else if (apple.x >= head.x && apple.y >= head.y) {
-        				snakeRegion = 4;
-        			} else if (apple.x < head.x && apple.y >= head.y) {
-        				snakeRegion = 3;
-        			} else if (apple.x >= head.x && apple.y < head.y) {
-        				snakeRegion = 2;
-        			}
-        			if (appleRegion + snakeRegion == 5) {									// we are in diagonal region according to the apple --> try to move to other regions
-        				if (snakeRegion == 1 || snakeRegion == 4) {							// run to R3's corner
-        					Coordinate target = new Coordinate(2, mazeSize.y - 2);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				} else {															// run to R4's corner
-        					Coordinate target = new Coordinate(mazeSize.x - 2, mazeSize.y - 2);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				}
-        			} else {																// we are near the apple's region --> engage hungry mode
-        				Arrays.sort(notLosing, new SortByDistance(apple, head));
-                		return notLosing[0];
-        			}
-            	} else {																	// we are longer than opponent --> engage aggressive mode
-            		Arrays.sort(notLosing, new SortByDistance(opponent.getHead(), head));
-            		return notLosing[0];
-            	}
-        	} else {																		// we are near the apple --> engage hungry mode
-        		if (snake.body.size() <= opponent.body.size() && Distance(apple, opponent.getHead()) <= headToApple) {		// opponent is near the apple than us
-        			// find our snake's region
-        			int snakeRegion = 0;
-        			Coordinate mid = new Coordinate(mazeSize.x/2, mazeSize.y/2);
-        			if (head.x < mid.x && head.y < mid.y) {									// snakeRegion = 1
-        				snakeRegion = 1;
-        			} else if (apple.x >= head.x && apple.y >= head.y) {					// snakeRegion = 4
-        				snakeRegion = 4;
-        			} else if (apple.x < head.x && apple.y >= head.y) {						// snakeRegion = 3
-        				snakeRegion = 3;
-        			} else if (apple.x >= head.x && apple.y < head.y) {						// snakeRegion = 2
-        				snakeRegion = 2;
-        			}
-        			if (head.x == opponent.getHead().x) {						// heads are colliding in vertical line
-        				if (snakeRegion == 1) {														// run to R2
-        					Coordinate target = new Coordinate(mazeSize.x - 3, 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				} else if (snakeRegion == 2) {												// run to R1
-        					Coordinate target = new Coordinate(3, 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				} else if (snakeRegion == 3) {												// run to R4
-        					Coordinate target = new Coordinate(mazeSize.x - 3, mazeSize.y - 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				} else if (snakeRegion == 4) {												// run to R3
-        					Coordinate target = new Coordinate(3, mazeSize.y - 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				}
-        			} else if (head.y == opponent.getHead().y) {				// heads are colliding in horizontal line
-        				if (snakeRegion == 1) {														// run to R3
-        					Coordinate target = new Coordinate(3, mazeSize.y - 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				} else if (snakeRegion == 2) {												// run to R4
-        					Coordinate target = new Coordinate(mazeSize.x - 3, mazeSize.y - 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				} else if (snakeRegion == 3) {												// run to R1
-        					Coordinate target = new Coordinate(3, 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				} else if (snakeRegion == 4) {												// run to R2
-        					Coordinate target = new Coordinate(mazeSize.x - 3, 3);
-                    		Arrays.sort(notLosing, new SortByDistance(target, head));
-                    		return notLosing[0];
-        				}
-        			} else {																		// else run to the middle
-        				Coordinate target = new Coordinate(mazeSize.x/3, mazeSize.y/3);
-                		Arrays.sort(notLosing, new SortByDistance(target, head));
-                		return notLosing[0];
-        			}
-        		}
-            	Arrays.sort(notLosing, new SortByDistance(apple, head));
-            	return notLosing[0];
+            int lengthDifferent = 4;
+            int sizeThreshold = 13;
+
+            // Condition 1 //
+            if (snake.body.size() >= (opponent.body.size() + lengthDifferent)) {												// Snake is much longer than the opponent
+                Arrays.sort(notLosing, new SortByDistance(opponent.getHead(), head));
+                return notLosing[0];
             }
-        } else {
-        	return validMoves[0];
+
+            // create a set of coordinates for the region
+            Coordinate mid = new Coordinate(mazeSize.x / 2, mazeSize.y / 2);	// Middle of the maze
+            Coordinate r1 = new Coordinate(2, 2);								// Top left of the maze
+            Coordinate r2 = new Coordinate(mazeSize.x - 2, 2);					// Top right of the maze
+            Coordinate r3 = new Coordinate(2, mazeSize.y - 2);					// Bottom left of the maze
+            Coordinate r4 = new Coordinate(mazeSize.x - 2, mazeSize.y - 2);		// Bottom right of the maze
+
+            // determine the region that snake is in
+            int snakeRegion = 0;
+            if (head.x < mid.x && head.y < mid.y) {
+                snakeRegion = 1;
+            } else if (apple.x >= head.x && apple.y >= head.y) {
+                snakeRegion = 4;
+            } else if (apple.x < head.x && apple.y >= head.y) {
+                snakeRegion = 3;
+            } else if (apple.x >= head.x && apple.y < head.y) {
+                snakeRegion = 2;
+            }
+
+            // Condition 2 //
+            if (snake.body.size() >= sizeThreshold) {																		// Snake is reaching the danger length
+                if (snake.body.size() > opponent.body.size()) {														// Snake is longer than the opponent
+                    Arrays.sort(notLosing, new SortByDistance(opponent.getHead(), head));
+                    return notLosing[0];
+                } else {																							// Snake is shorter than the opponent
+                    // -- decide the target for the snake -- //
+                    // if the snake is in a particular region, then the target will be the opposite diagonal region
+                    if (snakeRegion == 1 || snakeRegion == 4) {
+                        if (Distance(head, r1) <= 3) {
+                            Arrays.sort(notLosing, new SortByDistance(head, r4));
+                            return notLosing[0];
+                        } else {
+                            Arrays.sort(notLosing, new SortByDistance(head, r1));
+                            return notLosing[0];
+                        }
+                    } else {
+                        if (Distance(head, r2) <= 3) {
+                            Arrays.sort(notLosing, new SortByDistance(head, r3));
+                            return notLosing[0];
+                        } else {
+                            Arrays.sort(notLosing, new SortByDistance(head, r2));
+                            return notLosing[0];
+                        }
+                    }
+                }
+            }
+
+            // Condition 3 //
+            if ((opponent.body.size() - snake.body.size()) >= lengthDifferent && opponent.body.size() >= sizeThreshold) {		// The opponent is too long to catch up
+                // -- decide the target for the snake -- //
+                // if the snake is in a particular region, then the target will be the opposite diagonal region
+                if (snakeRegion == 1 || snakeRegion == 4) {
+                    if (Distance(head, r1) <= 3) {
+                        Arrays.sort(notLosing, new SortByDistance(head, r4));
+                        return notLosing[0];
+                    } else {
+                        Arrays.sort(notLosing, new SortByDistance(head, r1));
+                        return notLosing[0];
+                    }
+                } else {
+                    if (Distance(head, r2) <= 3) {
+                        Arrays.sort(notLosing, new SortByDistance(head, r3));
+                        return notLosing[0];
+                    } else {
+                        Arrays.sort(notLosing, new SortByDistance(head, r2));
+                        return notLosing[0];
+                    }
+                }
+            }
+
+            // get the distance from the snake to the apple
+            int headToApple = Distance(head, apple);
+
+            // Condition 4 //
+            if (snake.body.size() <= (opponent.body.size() + 1)) {								//				// Snake is shorter than the opponent
+                if (Distance(apple, opponent.getHead()) <= headToApple) {						//				|	// Snake is further than the opponent to apple
+                    if (head.x == opponent.getHead().x) {										//				|	|	// Both heads are colliding in vertical line
+                        // -- decide the target for the snake -- //								//				|	|	|
+                        // if the snake is in a particular region, then the target will be the opposite region in horizontal
+                        if (snakeRegion == 1) {													// 				|	|	|
+                            Arrays.sort(notLosing, new SortByDistance(r2, head));				//				|	|	|
+                            return notLosing[0];												//				|	|	|
+                        } else if (snakeRegion == 2) {											// 				|	|	|
+                            Arrays.sort(notLosing, new SortByDistance(r1, head));				//				|	|	|
+                            return notLosing[0];												//				|	|	|
+                        } else if (snakeRegion == 3) {											// 				|	|	|
+                            Arrays.sort(notLosing, new SortByDistance(r4, head));				//				|	|	|
+                            return notLosing[0];												//				|	|	|
+                        } else {																// 				|	|	|
+                            Arrays.sort(notLosing, new SortByDistance(r3, head));				//				|	|	|
+                            return notLosing[0];												//				|	|	|
+                        }																		//				|	|	|
+                    } else if (head.y == opponent.getHead().y) {								//				|	|	// Both heads are colliding in horizontal line
+                        // -- decide the target for the snake -- //								//				|	|
+                        // if the snake is in a particular region, then the target will be the opposite region in vertical
+                        if (snakeRegion == 1) {													// 				|	|
+                            Arrays.sort(notLosing, new SortByDistance(r3, head));				//				|	|
+                            return notLosing[0];												//				|	|
+                        } else if (snakeRegion == 2) {											// 				|	|
+                            Arrays.sort(notLosing, new SortByDistance(r4, head));				//				|	|
+                            return notLosing[0];												//				|	|
+                        } else if (snakeRegion == 3) {											// 				|	|
+                            Arrays.sort(notLosing, new SortByDistance(r1, head));				//				|	|
+                            return notLosing[0];												//				|	|
+                        } else {																// 				|	|
+                            Arrays.sort(notLosing, new SortByDistance(r2, head));				//				|	|
+                            return notLosing[0];												//				|	|
+                        }																		//				|	|
+                    } 																			//				|	|
+                } else {																		//				|	// Snake is closer than or having the same distance as the opponent to apple
+                    Arrays.sort(notLosing, new SortByDistance(apple, head));					//				|
+                    return notLosing[0];														//				|
+                }																				//				|
+            } else {																			//				// Snake is longer than the opponent
+                Arrays.sort(notLosing, new SortByDistance(opponent.getHead(), head));
+                return notLosing[0];
+            }
         }
+
+        // Condition 5 //
+        // -- decide the target for the snake -- //
+        // target for the snake now is a "fake apple", which lies at the opposite side of the apple
+        // this case is for avoiding the collision with the opponent's head when all of the above cases are not applied
+        Coordinate fakeApple = new Coordinate(mazeSize.x - apple.x, mazeSize.y - apple.y);
+        Arrays.sort(notLosing, new SortByDistance(fakeApple, head));
+        return notLosing[0];
     }
-    
+
     private static int Distance(Coordinate a, Coordinate b) {
         return Math.abs(b.x - a.x) + Math.abs(b.y - a.y);
     }
-    
+
     private static class SortByDistance implements Comparator<Direction> {
         private Coordinate destination;
         private Coordinate head;
@@ -170,6 +195,5 @@ public class anhsBot implements Bot {
             return Integer.compare(Distance(head.moveTo(a), destination), Distance(head.moveTo(b), destination));
         }
     }
-
 
 }

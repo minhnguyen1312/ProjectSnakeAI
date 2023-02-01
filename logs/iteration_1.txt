@@ -1,4 +1,4 @@
-v_smirnov vs anhsBot : 0 - 1 (Time taken: 51.05)
+v_smirnov vs anhsBot : 0 - 1 (Time taken: 48.782)
 
 -------------------------------------------
 
