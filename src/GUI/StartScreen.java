@@ -418,7 +418,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             JLabel l = new JLabel(data[i]);
             l.setFont(new Font("Arial", Font.BOLD, 20));
             l.setForeground(Color.WHITE);
-            l.setBounds(80*(i+1) + 100, 30*rowCount + 150, 600,100);
+            l.setBounds(100*(i+1) + 150, 50*rowCount + 150, 600,100);
             labelContainer.add(l);
             this.add(labelContainer);
         }

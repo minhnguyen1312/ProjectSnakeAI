@@ -91,7 +91,7 @@ public class MultiplayerStat {
         return aList;
     }
 
-    private static void writeAllToHomeAwayRecordTable(String path, boolean appendable) throws IOException {
+    private static void csvFullExport(String path, boolean appendable) throws IOException {
 
         String inputStr = "HOME || AWAY";
         FileWriter results_fw;
@@ -106,6 +106,32 @@ public class MultiplayerStat {
         for (int i = 0 ; i < Config.botNameArr.length ; i++) {
             String botHome = Config.botNameArr[i];
             for (int j = 0 ; j < Config.botNameArr.length ; j++) {
+                botHome += "," + TableRecord[i][j];
+            }
+            botHome += "\n";
+            results_fw.write(botHome);
+
+        }
+
+        results_fw.close();
+    }
+
+    private static void writeAllToHomeAwayRecordTable(String path, boolean appendable) throws IOException {
+
+        String inputStr = "HOME || AWAY";
+        FileWriter results_fw;
+        results_fw = new FileWriter(path, appendable);
+
+        for(String botAway : Config.botNameArr){
+//            System.out.print("," + botAway);
+            inputStr += "," + botAway;
+        }
+        results_fw.write(inputStr+"\n");
+
+        for (int i = 0 ; i < Config.botNameArr.length ; i++) {
+//            String botHome = Config.botNameArr[i];
+            String botHome = TableRecord[i][0];
+            for (int j = 1 ; j < Config.botNameArr.length ; j++) {
                 botHome += "," + TableRecord[i][j];
             }
             botHome += "\n";
