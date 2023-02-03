@@ -28,7 +28,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
     private final ImageIcon StartScreenBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/backgrv3.jpg")));
     private final ImageIcon SettingBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/settingsv5.jpg")));
     private final ImageIcon SinglePlayerStatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/SinglePlayerStatisticsv4.png")));
-    private final ImageIcon BotVsBotStatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/botStatistics.png")));
+    private final ImageIcon BotVsBotStatisticsBackground = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/GUI/img/botStatistics3.png")));
     private ImageIcon logo;
     private JLabel labelContainer;
     JButton playButton = new JButton();
@@ -418,7 +418,7 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             JLabel l = new JLabel(data[i]);
             l.setFont(new Font("Arial", Font.BOLD, 20));
             l.setForeground(Color.WHITE);
-            l.setBounds(100*(i+1) + 150, 50*rowCount + 150, 600,100);
+            l.setBounds(100*(i+1) + 150, 60*rowCount + 175, 600,100);
             labelContainer.add(l);
             this.add(labelContainer);
         }
