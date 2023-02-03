@@ -7,10 +7,10 @@ red
 preyType
 apple
 bot01
-v_smirnov
-lime green
-bot02
 anhsBot
-orange
+sky blue
+bot02
+a_zhuchkov
+white
 numberOfTournaments
 5

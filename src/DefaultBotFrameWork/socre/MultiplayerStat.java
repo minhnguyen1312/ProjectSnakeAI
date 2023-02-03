@@ -17,7 +17,7 @@ public class MultiplayerStat {
     public static String[][] TableRecord = new String[Config.botNameArr.length][Config.botNameArr.length];
 
 
-    public static void main(String[] args) throws Exception {
+    public static void run() throws Exception {
         readAllLinesFromFile(LOG_PATH);
         System.out.println("Unsorted:\n");
         for(String aRecord: aList){

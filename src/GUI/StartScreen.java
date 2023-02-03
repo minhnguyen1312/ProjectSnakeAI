@@ -1,14 +1,17 @@
 package GUI;
 
+import DefaultBotFrameWork.SnakesUIMain;
 import Game.Config;
 import Game.GameFrame;
 import Game.MessageWithLink;
 import Game.ScoreMain;
+import DefaultBotFrameWork.socre.MultiplayerStat;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -434,12 +437,18 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         if(e.getSource() == playButton) {
             this.setVisible(false);
             this.dispose();
-            try {
-                new GameFrame();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
 
+            new Thread(new Runnable(){
+                @Override
+                public void run(){
+                    try {
+                        SnakesUIMain.main(null);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         } else if (e.getSource() == settingsButton) {
             this.getContentPane().removeAll();
             this.validate();
@@ -489,12 +498,16 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
             }
 
         } else if (e.getSource() == quitgameButton) {
-            int respone = JOptionPane.showConfirmDialog(null, "You are about to exit the Game. Are you sure?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
-            if (respone == JOptionPane.YES_OPTION) {
-                this.setVisible(false);
-                this.dispose();
+//            int respone = JOptionPane.showConfirmDialog(null, "You are about to exit the Game. Are you sure?", "Exit Confirmation", JOptionPane.YES_NO_OPTION);
+//            if (respone == JOptionPane.YES_OPTION) {
+//                this.setVisible(false);
+//                this.dispose();
+//            }
+            try {
+                new GameFrame();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
-
         } else if (e.getSource() == infoButton) {
             JOptionPane.showMessageDialog(null, new MessageWithLink("Snake Revolution" +
                     "<br>version 1.0.0<br><br>" +
@@ -515,6 +528,12 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
 
         } else if (e.getSource() == changeStatisticsBoardButton) {
             if (nextStatistics.equals(statisticsBoard[0])) {
+                // switch to BotvsBot Mode
+                try {
+                    MultiplayerStat.run();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
                 this.getContentPane().removeAll();
                 this.validate();
                 this.repaint();

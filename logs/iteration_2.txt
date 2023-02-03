@@ -1,6 +1,0 @@
-v_smirnov vs anhsBot : 1 - 0 (Time taken: 59.289)
-
--------------------------------------------
-
-v_smirnov earned: 1
-anhsBot earned: 0
