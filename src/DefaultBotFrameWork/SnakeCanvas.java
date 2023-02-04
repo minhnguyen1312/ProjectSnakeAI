@@ -42,7 +42,7 @@ public class SnakeCanvas extends JPanel {
 	 */
 	public SnakeCanvas(SnakeGame game) {
 		this.game = game;
-		java.net.URL imageURL = getClass().getResource("images/apple.png");
+		java.net.URL imageURL = getClass().getResource("/./Skin/apple8bit.png");
 		if (imageURL != null) {
 			Image appleImage = new ImageIcon(imageURL).getImage().getScaledInstance(CELL_SIZE - 10, CELL_SIZE - 10,
 					Image.SCALE_SMOOTH);

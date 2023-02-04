@@ -5,13 +5,12 @@ import Game.Config;
 import Game.GameFrame;
 import Game.MessageWithLink;
 import Game.ScoreMain;
-import DefaultBotFrameWork.socre.MultiplayerStat;
+import DefaultBotFrameWork.score.MultiplayerStat;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import javax.swing.*;
 
@@ -355,9 +354,8 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(labelContainer);
 
         int numberOfRows = 14;
-//        int numberOfRows = countLineNumberCSV("./src/Game/score.csv");
         try {
-            BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/highscore.csv"));
+            BufferedReader csvReader = new BufferedReader(new FileReader("./src/Game/allHighscore.csv"));
             for (int rowCounter = 1 ; rowCounter <= numberOfRows && (row = csvReader.readLine()) != null ; rowCounter++) {
                 String[] data = row.split(",");
                 drawRow_Statistics(data, rowCounter);
@@ -395,7 +393,6 @@ public class StartScreen extends JFrame implements ActionListener, Runnable {
         this.add(labelContainer);
 
         int numberOfRows = 5;
-//        int numberOfRows = countLineNumberCSV("./src/Game/score.csv");
         try {
             boolean firstLine = true;
             BufferedReader csvReader = new BufferedReader(new FileReader("./logs/multiscoreboard.csv"));

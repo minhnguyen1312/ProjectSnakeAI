@@ -1,6 +1,5 @@
 package Game;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,25 +13,33 @@ public class Config {
     public static final int SQUARE_SIZE = 30;
     public static final int boundSquare = 2;
     public static final Color BACKGROUND = Color.DARK_GRAY;
-    public static final Color GAMEBOUND = Color.BLACK;
-    public static boolean moveAtleastAKey = false;
+    public static boolean moveAtleastASpace = false;
     public static Font SCORE_FONT = new Font("Comic Sans", Font.PLAIN, 24);
     public Path configPath = Paths.get("./src/Game/gameSettings.txt");
 
     // Prey Type
-    public static File APPLE_SKIN = new File("./src/Game/skin/apple8bit.png");
-    public static File CHERRY_SKIN = new File("./src/Game/skin/cherry.png");
-    public static File BANANA_SKIN = new File("./src/Game/skin/banana.png");
-    public static File MOUSE_SKIN = new File("./src/Game/skin/mouse.png");
+    public static File APPLE_SKIN = new File("./src/skin/apple8bit.png");
+    public static File CHERRY_SKIN = new File("./src/skin/cherry.png");
+    public static File BANANA_SKIN = new File("./src/skin/banana.png");
+    public static File MOUSE_SKIN = new File("./src/skin/mouse.png");
     public File SKIN;
-
-    // <--- TIME BETWEEN "ACTION"  ---> // --> defines game Difficulties
-    public static final int DELAY_DEFAULT = 75;
-    public static final int appleTimer_DEFAULT = 50; //moves
     public int DELAY;
     public int appleTimer;
 
     // GAME MODE
+    public enum GameDifficulty {
+        Easy(0),
+        Normal(1),
+        Hard(2),
+        Extreme(3),
+        Ultra(4);
+
+        int difficultyOrdinal;
+        GameDifficulty (int difficulty) {
+            this.difficultyOrdinal = difficulty;
+        }
+    }
+
     public GameDifficulty gameDifficulty;
 
     // Snake Config
@@ -145,7 +152,7 @@ public class Config {
 
         switch (bot02ColorInput) {
             case "white"    -> this.bot02Color = new Color(255, 255, 255);
-            case "gray"     -> this.bot02Color = new Color(128, 128, 128);
+            case "grey"     -> this.bot02Color = new Color(128, 128, 128);
             case "orange"   -> this.bot02Color = Color.ORANGE;
             case "yellow"   -> this.bot02Color = Color.YELLOW;
         }

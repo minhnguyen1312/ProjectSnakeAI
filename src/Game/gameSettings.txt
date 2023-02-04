@@ -5,9 +5,9 @@ black
 snakeColor
 red
 preyType
-apple
+cherry
 bot01
-anhsBot
+a_zhuchkov
 sky blue
 bot02
 a_zhuchkov

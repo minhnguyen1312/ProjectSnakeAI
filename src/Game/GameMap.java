@@ -9,7 +9,6 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -27,7 +26,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
 
     //<--- ARRAY OF EACH BODY PART ---> //
     //list <--- array easily overflown
-    private SnakeAbstract snake1;
+    private SnakeAbstract aSnake;
 
 
     // <--- APPLE SIZE ---> //
@@ -54,13 +53,12 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
         setFocusable(true);
         setPreferredSize(new Dimension(Config.WIDTH, Config.HEIGHT));
 
-        snake1 = new KeyController(classic, Direction.RIGHT, gameConfig.snakeColor);
-        SnakeClassic controlKey = new SnakeClassic(snake1);
-        addKeyListener(controlKey);
+        aSnake = new SnakeAbstract(classic, Direction.RIGHT, gameConfig.snakeColor);
+        addKeyListener(aSnake);
 
         // init the score
         score = 0;
-        addKeyListener(this);//for space+enter
+        addKeyListener(this);//for space
 
         r = new Random();
         appleAppear = false;
@@ -76,17 +74,6 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
     public void stop() {
         Config.running = false;
         timer.stop();
-    }
-    private void reset() {
-        score = 0;
-
-        snake1 = new KeyController(classic, Direction.DOWN, gameConfig.snakeColor);
-        SnakeClassic controlKey = new SnakeClassic(snake1);
-        addKeyListener(controlKey);
-
-
-        repaint();
-        start();
     }
     //     <--- GAME RUNNING ---> //
     @Override
@@ -120,9 +107,9 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
             int xApple = r.nextInt(Config.WIDTH / appleSize);       // bound for xApple
             int yApple = r.nextInt(Config.HEIGHT / appleSize);      // bound for yApple
             int n = Config.HEIGHT/Config.SQUARE_SIZE - Config.boundSquare;
-            for (int i = 0 ; i < snake1.getSnakeList().size() ; i++) {
-                if (xApple == snake1.getSnakeList().get(i).getxCoor() &&
-                        yApple == snake1.getSnakeList().get(i).getyCoor()) {
+            for (int i = 0; i < aSnake.getSnakeList().size() ; i++) {
+                if (xApple == aSnake.getSnakeList().get(i).getxCoor() &&
+                        yApple == aSnake.getSnakeList().get(i).getyCoor()) {
                     newAppleCoor = false;//apple on snake!
                     break;
                 }
@@ -175,8 +162,7 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
             // for(String fileNames : file.list()) System.out.println(fileNames);
 
 //            String path = GameMap.class.getPackage().getName();
-            String path = "";
-            path += "./src/Game/score.csv";
+            String path = "./src/Game/allScoreLog.csv";
 
             FileWriter write = new FileWriter(path,true);
 
@@ -251,12 +237,12 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
         g.drawString("SCORE: " + String.format ("%04d", score), Config.SQUARE_SIZE*2 , Config.SQUARE_SIZE*2 - 20);
 
         newApple(g);
-        checkSnake(snake1, g);
+        checkSnake(aSnake, g);
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (snake1.isAliveStatus() && e.getKeyCode() == KeyEvent.VK_SPACE) {
+        if (aSnake.isAliveStatus() && e.getKeyCode() == KeyEvent.VK_SPACE) {
             Config.running = true;
         }
     }

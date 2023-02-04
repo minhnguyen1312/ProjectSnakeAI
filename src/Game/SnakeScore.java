@@ -4,10 +4,10 @@ class SnakeScore implements Comparable<SnakeScore> {
 
     private String player;
     private int score;
-    private GameDifficulty difficulty;
+    private Config.GameDifficulty difficulty;
     private String preyType;
     private String date;
-    public SnakeScore(String playerName, int score, GameDifficulty difficulty, String prey, String date) {
+    public SnakeScore(String playerName, int score, Config.GameDifficulty difficulty, String prey, String date) {
         this.player = playerName;
         this.score = score;
         this.difficulty = difficulty;

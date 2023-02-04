@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class ScoreMain {
 
-    public static final String READ_PATH = "./src/Game/score.csv";
-    public static final String WRITE_PATH = "./src/Game/highscore.csv";
+    public static final String READ_PATH = "./src/Game/allScoreLog.csv";
+    public static final String WRITE_PATH = "./src/Game/allHighscore.csv";
 
     public static boolean append = false;
     public static ArrayList<String> StringList = new ArrayList<String>();
@@ -45,7 +45,7 @@ public class ScoreMain {
             String[] parts = snakePart.split(",");
             String player = parts[0];
             int score = Integer.parseInt(parts[1]);
-            GameDifficulty difficulty = GameDifficulty.valueOf((parts[2]));
+            Config.GameDifficulty difficulty = Config.GameDifficulty.valueOf((parts[2]));
             String preyType = parts[3];
             String date = parts[4];
             snake.add(new SnakeScore(player,score,difficulty,preyType,date));
