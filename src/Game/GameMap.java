@@ -158,10 +158,6 @@ public class GameMap extends JPanel implements /*Runnable,*/ActionListener, KeyL
 
     private void saveResult() {
         try {
-            File file = new File(".");
-            // for(String fileNames : file.list()) System.out.println(fileNames);
-
-//            String path = GameMap.class.getPackage().getName();
             String path = "./src/Game/allScoreLog.csv";
 
             FileWriter write = new FileWriter(path,true);
